@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brilio Academy — Mon Espace</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1A6BFF;--blue-light:#EBF1FF;--blue-dark:#0D3D99;
+  --gold:#EF9F27;--gold-light:#FEF6E7;
+  --green:#10B981;--green-light:#ECFDF5;
+  --purple:#8B5CF6;--purple-light:#EDE9FE;
+  --red:#EF4444;--red-light:#FEF2F2;
+  --text:#0D1526;--muted:#6B7A99;--border:#E2E8F4;
+  --bg:#F5F8FF;--white:#fff;--sidebar:240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:linear-gradient(160deg,#0D1F5C 0%,#1A6BFF 100%);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto;}
+.sb-logo{padding:1.2rem;border-bottom:1px solid rgba(255,255,255,.1);}
+.sb-logo-row{display:flex;align-items:center;gap:10px;}
+.sb-logo svg{width:32px;height:32px;flex-shrink:0;}
+.sb-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:white;letter-spacing:1.5px;}
+.sb-logo-sub{font-size:8px;font-weight:600;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.sb-user{padding:1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;}
+.sb-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0D1526;flex-shrink:0;}
+.sb-user-name{font-size:13px;font-weight:600;color:white;line-height:1.2;}
+.sb-user-level{font-size:11px;color:rgba(255,255,255,.5);}
+.sb-nav{padding:.8rem 0;flex:1;}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.3);text-transform:uppercase;padding:0 1.2rem;margin:.8rem 0 .3rem;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 1.2rem;font-size:13px;font-weight:500;color:rgba(255,255,255,.65);cursor:pointer;transition:all .2s;border-left:3px solid transparent;text-decoration:none;}
+.sb-item:hover{color:white;background:rgba(255,255,255,.08);}
+.sb-item.active{color:white;background:rgba(255,255,255,.12);border-left-color:var(--gold);}
+.sb-item-icon{width:18px;text-align:center;font-size:15px;}
+.sb-badge{margin-left:auto;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.sb-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.1);}
+.sb-logout{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.sb-logout:hover{background:rgba(239,68,68,.25);color:white;}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;}
+.topbar{background:white;border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 2rem;gap:1rem;position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:19px;flex:1;}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:7px 13px;flex:1;max-width:280px;}
+.topbar-search input{border:none;background:none;outline:none;font-size:13px;color:var(--text);width:100%;font-family:'DM Sans',sans-serif;}
+.topbar-right{display:flex;align-items:center;gap:10px;position:relative;}
+.notif-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;transition:all .2s;}
+.notif-btn:hover{border-color:var(--blue);background:var(--blue-light);}
+.notif-dot{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid white;}
+
+/* PROFILE DROPDOWN */
+.profile-btn{display:flex;align-items:center;gap:8px;padding:5px 10px 5px 5px;border:1px solid var(--border);border-radius:30px;cursor:pointer;background:white;transition:all .2s;}
+.profile-btn:hover{border-color:var(--blue);background:var(--blue-light);}
+.profile-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0D1526;}
+.profile-name{font-size:13px;font-weight:500;color:var(--text);}
+.profile-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;width:240px;background:white;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:200;overflow:hidden;}
+.profile-dropdown.open{display:block;animation:fadeDown .15s ease;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.pd-header{padding:1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--bg);}
+.pd-avatar{width:44px;height:44px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#0D1526;}
+.pd-name{font-size:14px;font-weight:600;}
+.pd-email{font-size:11px;color:var(--muted);}
+.pd-item{display:flex;align-items:center;gap:10px;padding:10px 1rem;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:background .15s;text-decoration:none;}
+.pd-item:hover{background:var(--bg);}
+.pd-item-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.pd-item.logout{color:var(--red);}
+.pd-item.logout:hover{background:var(--red-light);}
+.pd-divider{height:1px;background:var(--border);margin:4px 0;}
+
+/* CONTENT */
+.content{padding:1.8rem;flex:1;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* WELCOME */
+.welcome-banner{background:linear-gradient(135deg,#0D1F5C,#1A6BFF);border-radius:16px;padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;color:white;}
+.wb-text h2{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:4px;}
+.wb-text p{font-size:14px;opacity:.75;}
+.program-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:.8rem;}
+.prog-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,255,255,.2);color:white;border:1px solid rgba(255,255,255,.3);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem;display:flex;align-items:center;gap:12px;}
+.stat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;line-height:1;}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem;}
+.card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.card-title{font-size:14px;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;}
+
+/* PROGRESS */
+.prog-item{margin-bottom:.9rem;}
+.prog-item-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.prog-item-name{font-size:13px;font-weight:500;}
+.prog-item-pct{font-size:12px;color:var(--muted);}
+.prog-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;}
+
+/* ACTIVITY */
+.act-item{display:flex;align-items:center;gap:12px;padding:.75rem 0;border-bottom:1px solid var(--border);}
+.act-item:last-child{border-bottom:none;}
+.act-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.act-text strong{display:block;font-size:13px;font-weight:500;}
+.act-text span{font-size:12px;color:var(--muted);}
+.act-time{font-size:11px;color:var(--muted);white-space:nowrap;}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.page-header h2{font-family:'DM Serif Display',serif;font-size:22px;}
+.filter-tabs{display:flex;gap:4px;background:white;border:1px solid var(--border);border-radius:10px;padding:4px;}
+.ft{padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .2s;border:none;background:none;font-family:'DM Sans',sans-serif;}
+.ft.active{background:var(--blue);color:white;}
+
+/* COURSES */
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;}
+.course-card{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s;cursor:pointer;}
+.course-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(26,107,255,.1);border-color:var(--blue);}
+.cc-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;}
+.cc-badge{position:absolute;top:8px;right:8px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.badge-done{background:#ECFDF5;color:#065F46;}
+.badge-prog{background:#EEF2FF;color:#3730A3;}
+.badge-new{background:#FEF3C7;color:#92400E;}
+.cc-body{padding:1rem;}
+.cc-subject{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.cc-title{font-size:13px;font-weight:600;margin-bottom:7px;line-height:1.4;}
+.cc-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--muted);}
+.cc-prog-bar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;margin-top:8px;}
+.cc-prog-fill{height:100%;border-radius:2px;}
+.play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.15);opacity:0;transition:opacity .2s;}
+.course-card:hover .play-overlay{opacity:1;}
+.play-circle{width:42px;height:42px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:17px;}
+
+/* EXERCISES */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem;}
+.ex-card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.4rem;transition:all .25s;}
+.ex-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.07);border-color:var(--blue);}
+.ex-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;}
+.ex-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.ex-status{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.st-todo{background:var(--gold-light);color:#92400E;}
+.st-done{background:var(--green-light);color:#065F46;}
+.st-late{background:var(--red-light);color:#991B1B;}
+.ex-card h4{font-size:13px;font-weight:600;margin-bottom:5px;}
+.ex-card p{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:.9rem;}
+.ex-footer{display:flex;align-items:center;justify-content:space-between;}
+.ex-due{font-size:11px;color:var(--muted);}
+.ex-score{font-size:13px;font-weight:700;color:var(--green);}
+.btn-do{padding:6px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-view{padding:6px 14px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+
+/* EVALUATION */
+.eval-header{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+.eval-card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;}
+.eval-num{font-family:'DM Serif Display',serif;font-size:34px;margin-bottom:4px;}
+.eval-lbl{font-size:13px;color:var(--muted);}
+.eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.eval-subject{background:white;border:1px solid var(--border);border-radius:14px;padding:1.4rem;}
+.eval-sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.eval-stitle{font-size:14px;font-weight:600;}
+.eval-grade{font-family:'DM Serif Display',serif;font-size:26px;}
+.ec-item{display:flex;align-items:center;gap:10px;margin-bottom:.7rem;}
+.ec-label{font-size:12px;color:var(--muted);width:100px;flex-shrink:0;}
+.ec-bar{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;}
+.ec-fill{height:100%;border-radius:3px;}
+.ec-score{font-size:12px;font-weight:600;width:28px;text-align:right;}
+
+/* EXCHANGE */
+.exchange-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.exchange-form{background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.form-field{margin-bottom:1rem;}
+.form-field label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+.form-field input,.form-field textarea,.form-field select{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;transition:all .2s;resize:vertical;}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,107,255,.1);}
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.diff-opt{padding:9px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;text-align:center;font-size:12px;font-weight:500;transition:all .2s;color:var(--muted);}
+.diff-opt:hover,.diff-opt.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue);}
+.urgency-row{display:flex;gap:8px;}
+.urg-btn{flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--border);background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .2s;}
+.urg-btn.sel-normal{border-color:var(--green);background:var(--green-light);color:#065F46;}
+.urg-btn.sel-urgent{border-color:var(--gold);background:var(--gold-light);color:#92400E;}
+.urg-btn.sel-tres{border-color:var(--red);background:var(--red-light);color:#991B1B;}
+.btn-send-help{width:100%;padding:11px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:.5rem;}
+.exchange-history{background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;overflow-y:auto;max-height:640px;}
+.hist-item{border-radius:12px;padding:1rem;margin-bottom:.8rem;border:1px solid;}
+.hist-item.answered{background:var(--green-light);border-color:#A7F3D0;}
+.hist-item.pending{background:var(--gold-light);border-color:#FDE68A;}
+.hist-item.urgent{background:var(--red-light);border-color:#FECACA;}
+.hist-item.new-item{background:var(--blue-light);border-color:#BFDBFE;}
+.hist-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:7px;}
+.hist-title{font-size:13px;font-weight:600;margin-bottom:4px;}
+.hist-desc{font-size:12px;color:var(--muted);margin-bottom:.6rem;}
+.hist-reply{background:white;border-radius:8px;padding:.8rem;font-size:12px;line-height:1.6;}
+.hist-date{font-size:11px;color:var(--muted);}
+
+/* MESSAGES */
+.msg-layout{display:grid;grid-template-columns:260px 1fr;gap:0;background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;height:540px;}
+.msg-list{border-right:1px solid var(--border);overflow-y:auto;}
+.msg-list-hd{padding:.9rem 1rem;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;}
+.msg-search-box{padding:.7rem 1rem;border-bottom:1px solid var(--border);}
+.msg-search-box input{width:100%;padding:7px 11px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;}
+.msg-item{display:flex;align-items:center;gap:10px;padding:10px 1rem;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--bg);}
+.msg-item:hover,.msg-item.active{background:var(--blue-light);}
+.msg-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;}
+.msg-info{flex:1;min-width:0;}
+.msg-name{font-size:13px;font-weight:600;margin-bottom:2px;}
+.msg-prev{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.msg-time{font-size:10px;color:var(--muted);}
+.msg-unread{width:7px;height:7px;border-radius:50%;background:var(--blue);}
+.msg-chat{display:flex;flex-direction:column;}
+.msg-chat-hd{padding:.9rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.msg-chat-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;}
+.msg-chat-name{font-size:14px;font-weight:600;}
+.msg-status{font-size:11px;color:var(--green);}
+.msg-actions{margin-left:auto;display:flex;gap:6px;}
+.msg-act-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.msg-body{flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;}
+.bubble{max-width:65%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.5;}
+.bubble.recv{background:var(--bg);border-radius:4px 14px 14px 14px;align-self:flex-start;}
+.bubble.sent{background:var(--blue);color:white;border-radius:14px 4px 14px 14px;align-self:flex-end;}
+.bubble-time{font-size:10px;margin-top:3px;opacity:.6;text-align:right;}
+.msg-input-row{padding:.9rem;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;}
+.msg-input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:none;max-height:80px;transition:border-color .2s;}
+.msg-input:focus{border-color:var(--blue);}
+.btn-send-msg{width:38px;height:38px;border-radius:9px;background:var(--blue);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.btn-attach{width:38px;height:38px;border-radius:9px;background:var(--bg);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;}
+
+/* EXERCISE MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,21,38,.5);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal-box{background:white;border-radius:20px;padding:2.5rem;max-width:540px;width:90%;max-height:85vh;overflow-y:auto;animation:si .25s ease;position:relative;}
+@keyframes si{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:4px 8px;border-radius:8px;}
+.modal-close:hover{background:var(--bg);}
+.q-block{background:var(--bg);border-radius:12px;padding:1.2rem;margin-bottom:1rem;}
+.q-text{font-size:14px;font-weight:500;margin-bottom:.8rem;}
+.q-opts{display:flex;flex-direction:column;gap:7px;}
+.q-opt{display:flex;align-items:center;gap:10px;padding:9px 13px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .2s;font-size:13px;}
+.q-opt:hover{border-color:var(--blue);background:var(--blue-light);}
+.q-opt.selected{border-color:var(--blue);background:var(--blue-light);color:var(--blue);font-weight:500;}
+.q-opt.correct{border-color:var(--green);background:var(--green-light);color:#065F46;}
+.q-opt.wrong{border-color:var(--red);background:var(--red-light);color:#991B1B;}
+.btn-submit-ex{width:100%;padding:12px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:1rem;}
+.score-result{text-align:center;padding:2rem 0;}
+.score-circle{width:88px;height:88px;border-radius:50%;border:4px solid var(--green);background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);}
+
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.profile-avatar-big{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#0D1526;margin:0 auto 1rem;}
+.fi{margin-bottom:1rem;}
+.fi label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+.fi input,.fi select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text);transition:border-color .2s;}
+.fi input:focus,.fi select:focus{border-color:var(--blue);}
+.save-btn{width:100%;padding:11px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.5rem;}
+.info-row{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:1rem;margin-bottom:.8rem;}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem;}
+.mat-item{display:flex;align-items:center;gap:10px;padding:10px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;}
+.mat-item.subscribed{border-color:var(--blue);background:var(--blue-light);}
+.mat-item input[type=checkbox]{accent-color:var(--blue);width:15px;height:15px;}
+.mat-name{font-size:13px;font-weight:500;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#0D1526;color:white;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:500;display:none;align-items:center;gap:8px;z-index:500;box-shadow:0 8px 30px rgba(0,0,0,.3);}
+.toast.show{display:flex;animation:su .3s ease;}
+@keyframes su{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);}
+  .main{margin-left:0;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .grid-2,.exchange-layout,.eval-grid,.profile-grid{grid-template-columns:1fr;}
+  .msg-list{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-row">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,.15)"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(60 20 20)"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(120 20 20)"/>
+        <circle cx="20" cy="20" r="3.5" fill="#EF9F27"/>
+        <circle cx="34" cy="20" r="2" fill="white"/>
+        <circle cx="13" cy="26" r="2" fill="white"/>
+      </svg>
+      <div><div class="sb-logo-name">BRILIO</div><div class="sb-logo-sub">Academy</div></div>
+    </div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-avatar">AH</div>
+    <div><div class="sb-user-name">Ahmed Ben Ali</div><div class="sb-user-level">Lycée · 2nde</div></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Principal</div>
+    <a class="sb-item active" onclick="showPage('dashboard',this)"><span class="sb-item-icon">🏠</span> Tableau de bord</a>
+    <a class="sb-item" onclick="showPage('courses',this)"><span class="sb-item-icon">🎬</span> Mes cours</a>
+    <div class="sb-section">Suivi</div>
+    <a class="sb-item" onclick="showPage('exercises',this)"><span class="sb-item-icon">📝</span> Exercices<span class="sb-badge" style="background:var(--red)">3</span></a>
+    <a class="sb-item" onclick="showPage('evaluation',this)"><span class="sb-item-icon">📊</span> Mon évaluation</a>
+    <div class="sb-section">Communauté</div>
+    <a class="sb-item" onclick="showPage('community',this)"><span class="sb-item-icon">👥</span> Espace élèves<span class="sb-badge" style="background:var(--green)">New</span></a>
+    <div class="sb-section">Échanger</div>
+    <a class="sb-item" onclick="showPage('exchange',this)"><span class="sb-item-icon">🙋</span> J'ai pas compris<span class="sb-badge" style="background:var(--gold)">!</span></a>
+    <a class="sb-item" onclick="showPage('messages',this)"><span class="sb-item-icon">💬</span> Messages<span class="sb-badge" style="background:var(--red)">2</span></a>
+    <div class="sb-section">Mon compte</div>
+    <a class="sb-item" onclick="showPage('profile',this)"><span class="sb-item-icon">👤</span> Mon profil</a>
+  </nav>
+  <div class="sb-bottom">
+    <div class="sb-logout" onclick="openLogout()"><span>🚪</span> Se déconnecter</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Tableau de bord</div>
+    <div class="topbar-search"><span style="color:var(--muted);font-size:13px">🔍</span><input type="text" placeholder="Rechercher..."/></div>
+    <div class="topbar-right">
+      <div class="notif-btn" onclick="showPage('messages',null)">🔔<div class="notif-dot"></div></div>
+      <div class="profile-btn" onclick="toggleProfileMenu(event)">
+        <div class="profile-avatar">AH</div>
+        <span class="profile-name">Ahmed</span>
+        <span style="font-size:10px;color:var(--muted)">▾</span>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="pd-header">
+          <div class="pd-avatar">AH</div>
+          <div><div class="pd-name">Ahmed Ben Ali</div><div class="pd-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2a4b42474f4e6a4f474b434604494547">[email&#160;protected]</a></div></div>
+        </div>
+        <a class="pd-item" onclick="showPage('profile',null);closeProfileMenu()"><div class="pd-item-icon" style="background:var(--blue-light)">👤</div><span>Mes informations</span></a>
+        <a class="pd-item" onclick="showPage('community',null);closeProfileMenu()"><div class="pd-item-icon" style="background:var(--green-light)">👥</div><span>Espace élèves</span></a>
+        <a class="pd-item" onclick="showPage('exchange',null);closeProfileMenu()"><div class="pd-item-icon" style="background:var(--gold-light)">🙋</div><span>Espace d'échange</span></a>
+        <a class="pd-item" onclick="showPage('messages',null);closeProfileMenu()"><div class="pd-item-icon" style="background:var(--purple-light)">💬</div><span>Messages</span></a>
+        <div class="pd-divider"></div>
+        <a class="pd-item logout" onclick="openLogout();closeProfileMenu()"><div class="pd-item-icon" style="background:var(--red-light)">🚪</div><span>Se déconnecter</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="welcome-banner">
+        <div class="wb-text">
+          <h2>Bonjour Ahmed ! 👋</h2>
+          <p>Bienvenue dans ton espace Brilio Academy</p>
+          <div class="program-pills" id="dashPills"></div>
+        </div>
+        <div style="font-size:48px">🎓</div>
+      </div>
+      <div class="stats-row" id="dashStats"></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📈 Progression par matière</div>
+          <div id="dashProgress"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Activité récente</div>
+          <div class="act-item"><div class="act-icon" style="background:var(--blue-light)">🎬</div><div class="act-text"><strong>Équations du 2e degré</strong><span>Maths · Terminé</span></div><div class="act-time">Hier</div></div>
+          <div class="act-item"><div class="act-icon" style="background:var(--gold-light)">📝</div><div class="act-text"><strong>Exercice rendu : Grammaire</strong><span>Note : 17/20</span></div><div class="act-time">Il y a 2j</div></div>
+          <div class="act-item"><div class="act-icon" style="background:var(--green-light)">🙋</div><div class="act-text"><strong>Réponse de Prof. Karim</strong><span>Ta demande a été répondue</span></div><div class="act-time">Il y a 3j</div></div>
+          <div class="act-item"><div class="act-icon" style="background:var(--purple-light)">💬</div><div class="act-text"><strong>Message de Prof. Sara</strong><span>N'oublie pas l'exercice !</span></div><div class="act-time">Il y a 4j</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURS -->
+    <div class="page" id="page-courses">
+      <div class="page-header">
+        <h2>🎬 Mes cours en visio</h2>
+        <div class="filter-tabs" id="courseFilters"></div>
+      </div>
+      <div class="courses-grid" id="coursesGrid"></div>
+    </div>
+
+    <!-- EXERCICES -->
+    <div class="page" id="page-exercises">
+      <div class="page-header">
+        <h2>📝 Exercices & Devoirs</h2>
+        <div class="filter-tabs">
+          <button class="ft active" onclick="filterEx('all',this)">Tous</button>
+          <button class="ft" onclick="filterEx('todo',this)">À faire</button>
+          <button class="ft" onclick="filterEx('done',this)">Terminés</button>
+        </div>
+      </div>
+      <div class="ex-grid" id="exGrid"></div>
+    </div>
+
+    <!-- ÉVALUATION -->
+    <div class="page" id="page-evaluation">
+      <div class="page-header"><h2>📊 Mon évaluation</h2></div>
+      <div class="eval-header" id="evalHeader"></div>
+      <div class="eval-grid" id="evalGrid"></div>
+      <div class="card" style="margin-top:1.5rem">
+        <div class="card-title">💬 Commentaires des professeurs</div>
+        <div style="background:var(--green-light);border-radius:12px;padding:1rem;margin-bottom:.8rem">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem"><div style="width:28px;height:28px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white">KM</div><strong style="font-size:13px">Prof. Karim</strong><span style="font-size:11px;color:var(--muted);margin-left:auto">28 Mars</span></div>
+          <p style="font-size:13px;line-height:1.6">Excellent travail en arabe ! Ahmed progresse très bien. Continuer l'expression orale.</p>
+        </div>
+        <div style="background:var(--blue-light);border-radius:12px;padding:1rem">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem"><div style="width:28px;height:28px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white">SB</div><strong style="font-size:13px">Prof. Sara</strong><span style="font-size:11px;color:var(--muted);margin-left:auto">25 Mars</span></div>
+          <p style="font-size:13px;line-height:1.6">Bon travail en physique. Réviser les formules d'électricité pour le prochain cours.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉCHANGE -->
+    <div class="page" id="page-exchange">
+      <div class="page-header"><h2>🙋 J'ai pas compris — Demander de l'aide</h2></div>
+      <div style="background:linear-gradient(135deg,#1A3A8F,#1A6BFF);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;color:white">
+        <div style="font-size:32px">💡</div>
+        <div><div style="font-size:14px;font-weight:600;margin-bottom:3px">Quelque chose n'est pas clair dans un cours ?</div><div style="font-size:13px;opacity:.8">Envoie une demande à ton professeur. Il te répondra avec une explication personnalisée.</div></div>
+      </div>
+      <div class="exchange-layout">
+        <div class="exchange-form">
+          <div class="card-title">📩 Envoyer une demande</div>
+          <div class="form-field"><label>Matière concernée <span style="color:var(--blue)">*</span></label><select id="helpSubject"><option value="">-- Choisir --</option></select></div>
+          <div class="form-field"><label>Cours ou chapitre</label><input type="text" id="helpChapter" placeholder="Ex: Équations du 2e degré, Leçon 3..."/></div>
+          <div class="form-field"><label>Type de difficulté</label>
+            <div class="diff-grid">
+              <div class="diff-opt" onclick="selectDiff(this)">😕 Je n'ai pas compris la leçon</div>
+              <div class="diff-opt" onclick="selectDiff(this)">📝 Je bloque sur un exercice</div>
+              <div class="diff-opt" onclick="selectDiff(this)">🔁 J'ai besoin de réviser</div>
+              <div class="diff-opt" onclick="selectDiff(this)">❓ Question sur un concept</div>
+            </div>
+          </div>
+          <div class="form-field"><label>Explique ce que tu n'as pas compris <span style="color:var(--blue)">*</span></label><textarea id="helpMessage" rows="5" placeholder="Décris précisément ce qui te pose problème..."></textarea></div>
+          <div class="form-field"><label>Niveau d'urgence</label>
+            <div class="urgency-row">
+              <button class="urg-btn sel-normal" onclick="setUrg(this,'normal')">🟢 Normal</button>
+              <button class="urg-btn" onclick="setUrg(this,'urgent')">🟡 Urgent</button>
+              <button class="urg-btn" onclick="setUrg(this,'tres')">🔴 Très urgent</button>
+            </div>
+          </div>
+          <button class="btn-send-help" onclick="submitHelp()">🚀 Envoyer au professeur</button>
+        </div>
+        <div class="exchange-history">
+          <div class="card-title">📋 Mes demandes précédentes</div>
+          <div id="helpHistory">
+            <div class="hist-item answered"><div style="display:flex;justify-content:space-between;align-items:center"><span class="hist-tag" style="background:#D1FAE5;color:#065F46">✅ Répondu</span><span class="hist-date">28 Mars</span></div><div class="hist-title">📖 Arabe — Conjugaison des verbes</div><div class="hist-desc">Je ne comprends pas la différence entre le passé et le présent en arabe.</div><div class="hist-reply"><strong style="color:var(--green)">💬 Prof. Karim :</strong> Le passé (الماضي) se forme avec des suffixes, le présent (المضارع) avec des préfixes !</div></div>
+            <div class="hist-item pending"><div style="display:flex;justify-content:space-between;align-items:center"><span class="hist-tag" style="background:#FEF3C7;color:#92400E">⏳ En attente</span><span class="hist-date">01 Avr</span></div><div class="hist-title">🧪 Chimie — Équilibrage des équations</div><div class="hist-desc">Je bloque sur l'équilibrage des équations chimiques.</div></div>
+            <div class="hist-item urgent"><div style="display:flex;justify-content:space-between;align-items:center"><span class="hist-tag" style="background:#FEE2E2;color:#991B1B">🔴 Très urgent</span><span class="hist-date">02 Avr</span></div><div class="hist-title">➗ Maths — Fonctions dérivées</div><div class="hist-desc">Exercice à rendre demain, je bloque sur la dérivée des fonctions composées.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMUNAUTÉ -->
+    <div class="page" id="page-community">
+      <div class="page-header">
+        <h2>👥 Espace élèves</h2>
+      </div>
+
+      <!-- BANNER -->
+      <div style="background:linear-gradient(135deg,#0D1F5C,#1A6BFF);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;color:white">
+        <div>
+          <div style="font-size:16px;font-weight:600;margin-bottom:4px">Bienvenue dans la communauté Brilio ! 🌍</div>
+          <div style="font-size:13px;opacity:.75">Échange avec des élèves arabes de toute l'Europe · Entraide · Progression</div>
+        </div>
+        <div style="font-size:48px">🤝</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center">
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--blue)">47</div>
+          <div style="font-size:12px;color:var(--muted)">Élèves actifs</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center">
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green)">128</div>
+          <div style="font-size:12px;color:var(--muted)">Messages aujourd'hui</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center">
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--gold)">6</div>
+          <div style="font-size:12px;color:var(--muted)">Pays représentés</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem">
+
+        <!-- FORUM GAUCHE -->
+        <div>
+          <!-- SALONS PAR MATIÈRE -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px">💬 Salons de discussion</div>
+            <div id="communityRooms"></div>
+          </div>
+
+          <!-- CHAT ACTIF -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden">
+            <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:14px;font-weight:600" id="activeRoomTitle">📖 Salon Arabe</div>
+              <span style="font-size:11px;color:var(--green);font-weight:600">● 12 en ligne</span>
+            </div>
+            <div style="height:320px;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem" id="communityChat">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:30px;height:30px;border-radius:50%;background:#EF9F27;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0D1526;flex-shrink:0">SK</div>
+                <div><div style="font-size:11px;color:var(--muted);margin-bottom:3px">Sara K. · France · il y a 2min</div><div style="background:var(--bg);border-radius:4px 12px 12px 12px;padding:9px 13px;font-size:13px;max-width:280px">Quelqu'un peut m'expliquer la différence entre الفعل الماضي et الفعل المضارع ? 🙏</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:30px;height:30px;border-radius:50%;background:#1A6BFF;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">YA</div>
+                <div><div style="font-size:11px;color:var(--muted);margin-bottom:3px">Youssef A. · Espagne · il y a 1min</div><div style="background:var(--bg);border-radius:4px 12px 12px 12px;padding:9px 13px;font-size:13px;max-width:280px">الماضي c'est le passé, المضارع c'est le présent ! Le passé a des suffixes, le présent des préfixes 😊</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:30px;height:30px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0">LB</div>
+                <div><div style="font-size:11px;color:var(--muted);margin-bottom:3px">Lina B. · Italie · il y a 30s</div><div style="background:var(--bg);border-radius:4px 12px 12px 12px;padding:9px 13px;font-size:13px;max-width:280px">Exactement ! Et Prof. Karim en a parlé dans le cours 3, je t'envoie le timestamp 👆</div></div>
+              </div>
+            </div>
+            <div style="padding:.9rem;border-top:1px solid var(--border);display:flex;gap:8px">
+              <input type="text" id="communityInput" placeholder="Écrire un message à la communauté..." style="flex:1;padding:9px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none"/>
+              <button onclick="sendCommunityMsg()" style="width:40px;height:40px;border-radius:9px;background:var(--blue);border:none;color:white;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center">➤</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DROITE -->
+        <div style="display:flex;flex-direction:column;gap:1.2rem">
+
+          <!-- CLASSEMENT -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px">🏆 Classement de la semaine</div>
+            <div id="leaderboard"></div>
+          </div>
+
+          <!-- Q&R -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between">
+              <span>❓ Questions & Réponses</span>
+              <button onclick="openQR()" style="padding:5px 12px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">+ Poser</button>
+            </div>
+            <div id="qrList"></div>
+          </div>
+
+          <!-- GROUPES DE RÉVISION -->
+          <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+            <div style="font-size:14px;font-weight:600;margin-bottom:1rem">📚 Groupes de révision</div>
+            <div id="revGroups"></div>
+            <button onclick="showToast('✅ Groupe rejoint !')" style="width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:10px;background:none;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;margin-top:.8rem;font-family:'DM Sans',sans-serif">+ Créer un groupe</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="page" id="page-messages">
+      <div class="page-header"><h2>💬 Messages avec les professeurs</h2></div>
+      <div class="msg-layout">
+        <div class="msg-list">
+          <div class="msg-list-hd">Conversations</div>
+          <div class="msg-search-box"><input type="text" placeholder="Rechercher..."/></div>
+          <div class="msg-item active" onclick="selectConv(this,'Prof. Karim','KM','#1A6BFF')"><div class="msg-av" style="background:#1A6BFF">KM</div><div class="msg-info"><div class="msg-name">Prof. Karim</div><div class="msg-prev">Très bon travail !</div></div><div class="msg-meta"><div class="msg-time">10h30</div><div class="msg-unread"></div></div></div>
+          <div class="msg-item" onclick="selectConv(this,'Prof. Sara','SB','#10B981')"><div class="msg-av" style="background:#10B981">SB</div><div class="msg-info"><div class="msg-name">Prof. Sara</div><div class="msg-prev">N'oublie pas l'exercice</div></div><div class="msg-meta"><div class="msg-time">Hier</div><div class="msg-unread"></div></div></div>
+          <div class="msg-item" onclick="selectConv(this,'Prof. Mohamed','MR','#EF9F27')"><div class="msg-av" style="background:#EF9F27">MR</div><div class="msg-info"><div class="msg-name">Prof. Mohamed</div><div class="msg-prev">Revoir les réactions...</div></div><div class="msg-meta"><div class="msg-time">Lun</div></div></div>
+          <div class="msg-item" onclick="selectConv(this,'Support Brilio','BA','#8B5CF6')"><div class="msg-av" style="background:#8B5CF6">BA</div><div class="msg-info"><div class="msg-name">Support Brilio</div><div class="msg-prev">Bienvenue !</div></div><div class="msg-meta"><div class="msg-time">5j</div></div></div>
+        </div>
+        <div class="msg-chat">
+          <div class="msg-chat-hd"><div class="msg-chat-av" id="chatAv" style="background:#1A6BFF">KM</div><div><div class="msg-chat-name" id="chatName">Prof. Karim</div><div class="msg-status">● En ligne</div></div><div class="msg-actions"><button class="msg-act-btn">📞</button><button class="msg-act-btn">📹</button></div></div>
+          <div class="msg-body" id="msgBody">
+            <div class="bubble recv">Bonjour Ahmed ! Comment se passe ton apprentissage ?<div class="bubble-time">09h15</div></div>
+            <div class="bubble sent">Très bien Prof. ! J'ai bien compris le cours sur la grammaire.<div class="bubble-time">09h22</div></div>
+            <div class="bubble recv">Parfait ! 17/20 à l'exercice de grammaire. Excellent ! 🌟<div class="bubble-time">09h30</div></div>
+            <div class="bubble sent">Merci ! J'ai du mal avec l'expression orale, des conseils ?<div class="bubble-time">09h45</div></div>
+            <div class="bubble recv">Écoute des podcasts en arabe et lis à voix haute chaque jour !<div class="bubble-time">10h00</div></div>
+          </div>
+          <div class="msg-input-row">
+            <button class="btn-attach">📎</button>
+            <textarea class="msg-input" id="msgInput" rows="1" placeholder="Écrire un message..."></textarea>
+            <button class="btn-send-msg" onclick="sendMsg()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFIL -->
+    <div class="page" id="page-profile">
+      <div class="page-header"><h2>👤 Mon profil</h2></div>
+      <div class="profile-grid">
+        <div class="card">
+          <div class="card-title">Informations personnelles</div>
+          <div style="text-align:center;margin-bottom:1.5rem"><div class="profile-avatar-big">AH</div><button style="padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:none;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">📷 Changer la photo</button></div>
+          <div class="fi"><label>Nom</label><input type="text" value="Ben Ali"/></div>
+          <div class="fi"><label>Prénom</label><input type="text" value="Ahmed"/></div>
+          <div class="fi"><label>Email</label><input type="email" value="ahmed.benali@email.com"/></div>
+          <div class="fi"><label>Date de naissance</label><input type="date" value="2009-03-15"/></div>
+          <div class="fi"><label>Pays</label><select><option>France</option><option>Espagne</option><option>Italie</option><option>Belgique</option><option>Autre</option></select></div>
+          <button class="save-btn" onclick="showToast('✅ Profil sauvegardé !')">Sauvegarder les modifications</button>
+        </div>
+        <div class="card">
+          <div class="card-title">🎓 Mon programme de cours</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6">Coche les matières auxquelles tu es inscrit.</p>
+          <div class="mat-grid" id="matGrid"></div>
+          <button class="save-btn" style="margin-top:1rem" onclick="saveProgram()">💾 Sauvegarder mon programme</button>
+          <div style="margin-top:1.5rem">
+            <div class="card-title" style="margin-bottom:.8rem">📋 Informations</div>
+            <div class="info-row"><div style="font-size:22px">🏫</div><div><strong style="display:block;font-size:13px">Niveau scolaire</strong><span style="font-size:12px;color:var(--muted)">Lycée · 2nde</span></div></div>
+            <div class="info-row"><div style="font-size:22px">📅</div><div><strong style="display:block;font-size:13px">Membre depuis</strong><span style="font-size:12px;color:var(--muted)">Janvier 2025</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXERCISE MODAL -->
+<div class="modal-overlay" id="exModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeExModal()">✕</button>
+    <h3 id="exTitle" style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:4px"></h3>
+    <p id="exSub" style="font-size:13px;color:var(--muted);margin-bottom:1.2rem"></p>
+    <div id="exBody"></div>
+  </div>
+</div>
+
+<!-- LOGOUT MODAL -->
+<div class="modal-overlay" id="logoutModal">
+  <div style="background:white;border-radius:20px;padding:2rem;max-width:360px;width:90%;text-align:center">
+    <div style="font-size:44px;margin-bottom:1rem">🚪</div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:.5rem">Se déconnecter ?</h3>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:1.5rem">Tu vas quitter ton espace Brilio Academy. À bientôt !</p>
+    <div style="display:flex;gap:10px">
+      <button onclick="document.getElementById('logoutModal').classList.remove('show')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:none;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Annuler</button>
+      <button onclick="location.href='index.html'" style="flex:1;padding:10px;background:var(--red);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Se déconnecter</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══ DATA ══
+const student = {
+  name:"Ahmed Ben Ali", initials:"AH", level:"Lycée · 2nde", email:"ahmed@email.com",
+  subscribedSubjects:['arabic','math','physics']
+};
+
+const allSubjects = [
+  {id:'arabic',   label:'📖 Arabe',        progColor:'#EF9F27', light:'var(--gold-light)',   progress:78, note:'17/20'},
+  {id:'math',     label:'➗ Mathématiques', progColor:'#1A6BFF', light:'var(--blue-light)',   progress:65, note:'14/20'},
+  {id:'physics',  label:'⚡ Physique',      progColor:'#10B981', light:'var(--green-light)',  progress:82, note:'16/20'},
+  {id:'chemistry',label:'🧪 Chimie',        progColor:'#8B5CF6', light:'var(--purple-light)', progress:55, note:'13/20'},
+  {id:'french',   label:'🇫🇷 Français',    progColor:'#EF4444', light:'var(--red-light)',    progress:0,  note:'—'},
+  {id:'english',  label:'🇬🇧 Anglais',     progColor:'#0D3D99', light:'#DBEAFE',             progress:0,  note:'—'},
+];
+
+const allCourses = [
+  {id:1,sub:'arabic',  title:"Introduction à l'alphabet arabe",date:"15 Mar",dur:"45min",prog:100,status:'done'},
+  {id:2,sub:'arabic',  title:"Les voyelles courtes",date:"20 Mar",dur:"50min",prog:100,status:'done'},
+  {id:3,sub:'arabic',  title:"Conjugaison des verbes arabes",date:"27 Mar",dur:"55min",prog:60,status:'prog'},
+  {id:4,sub:'math',    title:"Équations du 2e degré",date:"18 Mar",dur:"60min",prog:100,status:'done'},
+  {id:5,sub:'math',    title:"Fonctions dérivées",date:"25 Mar",dur:"65min",prog:40,status:'prog'},
+  {id:6,sub:'math',    title:"Probabilités",date:"01 Avr",dur:"55min",prog:0,status:'new'},
+  {id:7,sub:'physics', title:"Les lois de Newton",date:"10 Mar",dur:"50min",prog:100,status:'done'},
+  {id:8,sub:'physics', title:"L'électricité et les circuits",date:"22 Mar",dur:"60min",prog:80,status:'prog'},
+  {id:9,sub:'chemistry',title:"Structure de l'atome",date:"12 Mar",dur:"45min",prog:100,status:'done'},
+  {id:10,sub:'chemistry',title:"Les réactions chimiques",date:"26 Mar",dur:"55min",prog:30,status:'prog'},
+  {id:11,sub:'french', title:"Les figures de style",date:"14 Mar",dur:"50min",prog:100,status:'done'},
+  {id:12,sub:'english',title:"Present perfect vs Past simple",date:"19 Mar",dur:"45min",prog:75,status:'prog'},
+];
+
+const allExercises = [
+  {id:1,sub:'arabic',  title:"Grammaire arabe — Leçon 3",desc:"Pronoms personnels et conjugaison.",due:"05 Avr",status:'done',score:"17/20"},
+  {id:2,sub:'math',    title:"Équations du 2e degré",desc:"Résoudre 5 équations ax²+bx+c=0.",due:"07 Avr",status:'todo',score:null},
+  {id:3,sub:'math',    title:"Fonctions et variations",desc:"Étudier le signe de 3 fonctions.",due:"03 Avr",status:'late',score:null},
+  {id:4,sub:'physics', title:"Les lois de Newton",desc:"Applications des 3 lois avec calculs.",due:"08 Avr",status:'todo',score:null},
+  {id:5,sub:'chemistry',title:"Structure de l'atome",desc:"QCM sur la structure atomique.",due:"10 Avr",status:'todo',score:null},
+  {id:6,sub:'arabic',  title:"Lecture et compréhension",desc:"Lire un texte et répondre.",due:"02 Avr",status:'done',score:"15/20"},
+  {id:7,sub:'french',  title:"Analyse de texte — Zola",desc:"Identifier les figures de style.",due:"09 Avr",status:'todo',score:null},
+  {id:8,sub:'english', title:"Grammar test — Tenses",desc:"Fill in the blanks.",due:"11 Avr",status:'done',score:"18/20"},
+];
+
+const quizzes = {
+  2:{title:"Équations du 2e degré",sub:"Résolvez les équations",questions:[
+    {q:"Solution de x²-5x+6=0 ?",opts:["x=1 et x=6","x=2 et x=3","x=-2 et x=-3","x=3 et x=-2"],c:1},
+    {q:"Si Δ<0, l'équation a :",opts:["2 solutions","1 solution","Pas de solution réelle","∞ solutions"],c:2},
+    {q:"Pour x²-4=0, les solutions sont :",opts:["x=2","x=-2","x=2 et x=-2","x=4"],c:2},
+  ]},
+  4:{title:"Les lois de Newton",sub:"Mécanique newtonienne",questions:[
+    {q:"Un objet au repos reste au repos si :",opts:["Toujours","Aucune force ne s'applique","Il est lourd","Il est petit"],c:1},
+    {q:"F=20N, m=4kg. Accélération ?",opts:["5 m/s²","80 m/s²","0.2 m/s²","16 m/s²"],c:0},
+    {q:"La 3e loi de Newton dit :",opts:["Force unidirectionnelle","Action = réaction opposée","Forces annulées","Énergie conservée"],c:1},
+  ]},
+};
+
+// ══ INIT ══
+function init(){
+  renderDashboard();
+  renderMatGrid();
+  populateHelpSelect();
+}
+
+// ══ DASHBOARD ══
+function renderDashboard(){
+  const subs = allSubjects.filter(s=>student.subscribedSubjects.includes(s.id));
+  document.getElementById('dashPills').innerHTML = subs.map(s=>`<span class="prog-pill">${s.label}</span>`).join('');
+  const myC = allCourses.filter(c=>student.subscribedSubjects.includes(c.sub));
+  const myE = allExercises.filter(e=>student.subscribedSubjects.includes(e.sub));
+  const done = myE.filter(e=>e.status==='done').length;
+  document.getElementById('dashStats').innerHTML=`
+    <div class="stat-card"><div class="stat-icon" style="background:var(--blue-light)">🎬</div><div><div class="stat-num">${myC.length}</div><div class="stat-lbl">Cours suivis</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:var(--gold-light)">📝</div><div><div class="stat-num">${done}/${myE.length}</div><div class="stat-lbl">Exercices faits</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:var(--green-light)">⭐</div><div><div class="stat-num">15/20</div><div class="stat-lbl">Moyenne</div></div></div>
+    <div class="stat-card"><div class="stat-icon" style="background:var(--purple-light)">🔥</div><div><div class="stat-num">7j</div><div class="stat-lbl">Série</div></div></div>`;
+  document.getElementById('dashProgress').innerHTML = subs.map(s=>`
+    <div class="prog-item">
+      <div class="prog-item-hd"><span class="prog-item-name">${s.label}</span><span class="prog-item-pct">${s.progress}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${s.progress}%;background:${s.progColor}"></div></div>
+    </div>`).join('');
+}
+
+// ══ COURSES ══
+function renderCourses(filter){
+  const myCourses = allCourses.filter(c=>student.subscribedSubjects.includes(c.sub));
+  const list = filter==='all'?myCourses:myCourses.filter(c=>c.sub===filter);
+  const subjMap={};allSubjects.forEach(s=>subjMap[s.id]=s);
+  const sLabel={done:'Terminé',prog:'En cours',new:'À venir'};
+  const sCls={done:'badge-done',prog:'badge-prog',new:'badge-new'};
+  const thumbBg={arabic:'linear-gradient(135deg,#FEF3C7,#FDE68A)',math:'linear-gradient(135deg,#EEF2FF,#C7D2FE)',physics:'linear-gradient(135deg,#ECFDF5,#A7F3D0)',chemistry:'linear-gradient(135deg,#F5F3FF,#DDD6FE)',french:'linear-gradient(135deg,#FEE2E2,#FECACA)',english:'linear-gradient(135deg,#DBEAFE,#BFDBFE)'};
+  const emoji={arabic:'📖',math:'➗',physics:'⚡',chemistry:'🧪',french:'🇫🇷',english:'🇬🇧'};
+  document.getElementById('coursesGrid').innerHTML = list.length?list.map(c=>`
+    <div class="course-card">
+      <div class="cc-thumb" style="background:${thumbBg[c.sub]||'var(--bg)'}">
+        <span style="font-size:36px">${emoji[c.sub]||'📚'}</span>
+        <div class="play-overlay"><div class="play-circle">▶</div></div>
+        <span class="cc-badge ${sCls[c.status]}">${sLabel[c.status]}</span>
+      </div>
+      <div class="cc-body">
+        <div class="cc-subject">${subjMap[c.sub]?.label||c.sub}</div>
+        <div class="cc-title">${c.title}</div>
+        <div class="cc-meta"><span>📅 ${c.date}</span><span>⏱ ${c.dur}</span></div>
+        ${c.status!=='new'?`<div class="cc-prog-bar"><div class="cc-prog-fill" style="width:${c.prog}%;background:${subjMap[c.sub]?.progColor||'var(--blue)'}"></div></div>`:''}
+      </div>
+    </div>`).join(''):`<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">Aucun cours.</div>`;
+}
+
+function buildCourseFilters(){
+  const subs = allSubjects.filter(s=>student.subscribedSubjects.includes(s.id));
+  document.getElementById('courseFilters').innerHTML = `<button class="ft active" onclick="filterCourses('all',this)">Tous</button>`
+    +subs.map(s=>`<button class="ft" onclick="filterCourses('${s.id}',this)">${s.label}</button>`).join('');
+}
+
+function filterCourses(f,btn){
+  document.querySelectorAll('#courseFilters .ft').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCourses(f);
+}
+
+// ══ EXERCISES ══
+function renderExercises(filter){
+  const myEx = allExercises.filter(e=>student.subscribedSubjects.includes(e.sub));
+  const list = filter==='all'?myEx:myEx.filter(e=>e.status===filter);
+  const subjMap={};allSubjects.forEach(s=>subjMap[s.id]=s);
+  const sLbl={todo:'À faire',done:'Terminé',late:'En retard'};
+  const sCls={todo:'st-todo',done:'st-done',late:'st-late'};
+  const emoji={arabic:'📖',math:'➗',physics:'⚡',chemistry:'🧪',french:'🇫🇷',english:'🇬🇧'};
+  document.getElementById('exGrid').innerHTML = list.length?list.map(e=>`
+    <div class="ex-card">
+      <div class="ex-header">
+        <div class="ex-icon" style="background:${subjMap[e.sub]?.light||'var(--bg)'}"><span style="font-size:18px">${emoji[e.sub]||'📝'}</span></div>
+        <span class="ex-status ${sCls[e.status]}">${sLbl[e.status]}</span>
+      </div>
+      <h4>${e.title}</h4>
+      <p>${e.desc}</p>
+      <div class="ex-footer">
+        <span class="ex-due">📅 ${e.due}</span>
+        ${e.score?`<span class="ex-score">✅ ${e.score}</span><button class="btn-view" onclick="openEx(${e.id})">Voir</button>`:`<button class="btn-do" onclick="openEx(${e.id})">Commencer</button>`}
+      </div>
+    </div>`).join(''):`<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">Aucun exercice.</div>`;
+}
+
+function filterEx(f,btn){
+  document.querySelectorAll('#page-exercises .ft').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderExercises(f);
+}
+
+// ══ EVALUATION ══
+function renderEval(){
+  const subs = allSubjects.filter(s=>student.subscribedSubjects.includes(s.id));
+  const myE = allExercises.filter(e=>student.subscribedSubjects.includes(e.sub));
+  document.getElementById('evalHeader').innerHTML=`
+    <div class="eval-card"><div class="eval-num" style="color:var(--blue)">15.2</div><div class="eval-lbl">Moyenne générale /20</div></div>
+    <div class="eval-card"><div class="eval-num" style="color:var(--gold)">${myE.filter(e=>e.status==='done').length}/${myE.length}</div><div class="eval-lbl">Exercices complétés</div></div>
+    <div class="eval-card"><div class="eval-num" style="color:var(--green)">Bien</div><div class="eval-lbl">Appréciation globale</div></div>`;
+  const criteria={arabic:['Lecture','Écriture','Grammaire','Expression'],math:['Algèbre','Géométrie','Analyse','Probabilités'],physics:['Mécanique','Électricité','Optique'],chemistry:['Atomes','Réactions','Solutions'],french:['Lecture','Rédaction','Grammaire'],english:['Speaking','Writing','Grammar']};
+  const scores={arabic:[90,80,85,75],math:[70,80,60,65],physics:[85,75,80],chemistry:[65,60,70],french:[88,76,82],english:[80,85,90]};
+  document.getElementById('evalGrid').innerHTML=subs.map(s=>`
+    <div class="eval-subject">
+      <div class="eval-sh"><div class="eval-stitle">${s.label}</div><div class="eval-grade" style="color:${s.progColor}">${s.note}</div></div>
+      <div>${(criteria[s.id]||[]).map((c,j)=>`
+        <div class="ec-item">
+          <span class="ec-label">${c}</span>
+          <div class="ec-bar"><div class="ec-fill" style="width:${(scores[s.id]||[])[j]||70}%;background:${s.progColor}"></div></div>
+          <span class="ec-score" style="color:${s.progColor}">${Math.round(((scores[s.id]||[])[j]||70)/5)}</span>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ══ HELP ══
+function populateHelpSelect(){
+  const subs = allSubjects.filter(s=>student.subscribedSubjects.includes(s.id));
+  document.getElementById('helpSubject').innerHTML='<option value="">-- Choisir --</option>'
+    +subs.map(s=>`<option value="${s.id}">${s.label}</option>`).join('');
+}
+function selectDiff(el){document.querySelectorAll('.diff-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function setUrg(btn,lvl){
+  document.querySelectorAll('.urg-btn').forEach(b=>b.className='urg-btn');
+  btn.classList.add('sel-'+lvl);
+}
+function submitHelp(){
+  const sub=document.getElementById('helpSubject').value;
+  const msg=document.getElementById('helpMessage').value;
+  if(!sub||!msg){showToast('⚠️ Merci de remplir les champs obligatoires');return;}
+  const today=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+  const subLabel=allSubjects.find(s=>s.id===sub)?.label||sub;
+  const ch=document.getElementById('helpChapter').value;
+  const div=document.createElement('div');
+  div.className='hist-item new-item';
+  div.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><span class="hist-tag" style="background:#DBEAFE;color:#1E40AF">🕐 Envoyé</span><span class="hist-date">${today}</span></div><div class="hist-title">${subLabel}${ch?' — '+ch:''}</div><div class="hist-desc">${msg}</div>`;
+  document.getElementById('helpHistory').prepend(div);
+  document.getElementById('helpSubject').value='';
+  document.getElementById('helpChapter').value='';
+  document.getElementById('helpMessage').value='';
+  document.querySelectorAll('.diff-opt').forEach(o=>o.classList.remove('selected'));
+  showToast('✅ Demande envoyée au professeur !');
+}
+
+// ══ MAT GRID ══
+function renderMatGrid(){
+  document.getElementById('matGrid').innerHTML=allSubjects.map(s=>`
+    <div class="mat-item ${student.subscribedSubjects.includes(s.id)?'subscribed':''}" onclick="toggleMat('${s.id}',this)">
+      <input type="checkbox" id="mat-${s.id}" ${student.subscribedSubjects.includes(s.id)?'checked':''}/>
+      <span class="mat-name">${s.label}</span>
+    </div>`).join('');
+}
+function toggleMat(id,el){
+  const cb=document.getElementById('mat-'+id);
+  cb.checked=!cb.checked;
+  el.classList.toggle('subscribed',cb.checked);
+}
+function saveProgram(){
+  student.subscribedSubjects=allSubjects.filter(s=>document.getElementById('mat-'+s.id)?.checked).map(s=>s.id);
+  renderDashboard();buildCourseFilters();populateHelpSelect();
+  showToast('✅ Programme mis à jour !');
+}
+
+// ══ PAGE NAV ══
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el){document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+  const titles={dashboard:'Tableau de bord',courses:'Mes cours',exercises:'Exercices & Devoirs',evaluation:'Mon évaluation',community:'Espace élèves',exchange:"Espace d'échange",messages:'Messages',profile:'Mon profil'};
+  document.getElementById('pageTitle').textContent=titles[id]||'';
+  if(id==='courses'){buildCourseFilters();renderCourses('all');}
+  if(id==='exercises')renderExercises('all');
+  if(id==='evaluation')renderEval();
+  if(id==='community')renderCommunity();
+}
+
+// ══ PROFILE DROPDOWN ══
+function toggleProfileMenu(e){e.stopPropagation();document.getElementById('profileDropdown').classList.toggle('open');}
+function closeProfileMenu(){document.getElementById('profileDropdown').classList.remove('open');}
+document.addEventListener('click',closeProfileMenu);
+
+// ══ LOGOUT ══
+function openLogout(){document.getElementById('logoutModal').classList.add('show');}
+document.getElementById('logoutModal').addEventListener('click',e=>{if(e.target===document.getElementById('logoutModal'))document.getElementById('logoutModal').classList.remove('show');});
+
+// ══ MESSAGES ══
+function selectConv(el,name,init,color){
+  document.querySelectorAll('.msg-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('chatAv').textContent=init;
+  document.getElementById('chatAv').style.background=color;
+  document.getElementById('chatName').textContent=name;
+}
+function sendMsg(){
+  const inp=document.getElementById('msgInput');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  const body=document.getElementById('msgBody');
+  const t=`${new Date().getHours()}h${String(new Date().getMinutes()).padStart(2,'0')}`;
+  body.innerHTML+=`<div class="bubble sent">${msg}<div class="bubble-time">${t}</div></div>`;
+  inp.value='';body.scrollTop=body.scrollHeight;
+  setTimeout(()=>{body.innerHTML+=`<div class="bubble recv">Merci ! Je te réponds dès que possible 😊<div class="bubble-time">${t}</div></div>`;body.scrollTop=body.scrollHeight;},1500);
+}
+document.getElementById('msgInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+
+// ══ EXERCISES MODAL ══
+let answers={};
+function openEx(id){
+  const q=quizzes[id];
+  if(!q){showToast('📝 Exercice disponible bientôt !');return;}
+  answers={};
+  document.getElementById('exTitle').textContent=q.title;
+  document.getElementById('exSub').textContent=q.sub;
+  document.getElementById('exBody').innerHTML=q.questions.map((qst,i)=>`
+    <div class="q-block">
+      <div class="q-text">${i+1}. ${qst.q}</div>
+      <div class="q-opts">${qst.opts.map((o,j)=>`
+        <div class="q-opt" id="o${i}-${j}" onclick="pickOpt(${i},${j},${qst.c})">
+          <span style="width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${'ABCD'[j]}</span>${o}
+        </div>`).join('')}
+      </div>
+    </div>`).join('')+`<button class="btn-submit-ex" onclick="submitEx('${id}')">Valider ✓</button>`;
+  document.getElementById('exModal').classList.add('show');
+}
+function pickOpt(qi,oi,c){
+  document.querySelectorAll(`[id^="o${qi}-"]`).forEach(o=>o.classList.remove('selected'));
+  document.getElementById(`o${qi}-${oi}`).classList.add('selected');
+  answers[qi]=oi;
+}
+function submitEx(id){
+  const q=quizzes[id];
+  let score=0;
+  q.questions.forEach((qst,i)=>{
+    const sel=answers[i];
+    if(sel===qst.c)score++;
+    document.querySelectorAll(`[id^="o${i}-"]`).forEach((o,j)=>{
+      o.classList.remove('selected');
+      if(j===qst.c)o.classList.add('correct');
+      else if(j===sel&&sel!==qst.c)o.classList.add('wrong');
+    });
+  });
+  setTimeout(()=>{
+    const note=Math.round(score/q.questions.length*20);
+    document.getElementById('exBody').innerHTML=`
+      <div class="score-result">
+        <div class="score-circle">${note}/20</div>
+        <h4 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:8px">${score===q.questions.length?'Parfait ! 🎉':score>q.questions.length/2?'Bien joué ! 👍':'Continue tes efforts 💪'}</h4>
+        <p style="font-size:14px;color:var(--muted)">${score}/${q.questions.length} bonnes réponses</p>
+        <button class="btn-submit-ex" style="max-width:200px;margin:1.5rem auto 0;background:var(--green)" onclick="closeExModal()">Fermer ✓</button>
+      </div>`;
+  },600);
+}
+function closeExModal(){document.getElementById('exModal').classList.remove('show');}
+document.getElementById('exModal').addEventListener('click',e=>{if(e.target===document.getElementById('exModal'))closeExModal();});
+
+// ══ COMMUNITY ══
+const rooms=[
+  {id:'arabic',  label:'📖 Arabe',        online:12, color:'#EF9F27'},
+  {id:'math',    label:'➗ Mathématiques', online:8,  color:'#1A6BFF'},
+  {id:'physics', label:'⚡ Physique',      online:6,  color:'#10B981'},
+  {id:'chemistry',label:'🧪 Chimie',      online:4,  color:'#8B5CF6'},
+  {id:'general', label:'💬 Général',       online:15, color:'#0D3D99'},
+];
+
+const leaderboardData=[
+  {rank:1,name:'Youssef A.',country:'🇪🇸',pts:420,medal:'🥇'},
+  {rank:2,name:'Sara K.',country:'🇫🇷',pts:385,medal:'🥈'},
+  {rank:3,name:'Ahmed B.',country:'🇫🇷',pts:340,medal:'🥉'},
+  {rank:4,name:'Lina B.',country:'🇮🇹',pts:290,medal:''},
+  {rank:5,name:'Karim M.',country:'🇧🇪',pts:255,medal:''},
+];
+
+const qrData=[
+  {q:"Comment mémoriser les lettres arabes rapidement ?",sub:'arabic',ans:3,time:'il y a 1h',solved:true},
+  {q:"Quelqu'un peut expliquer les dérivées composées ?",sub:'math',ans:1,time:'il y a 2h',solved:false},
+  {q:"Aide pour l'équilibrage des équations chimiques ?",sub:'chemistry',ans:0,time:'il y a 30min',solved:false},
+];
+
+const revGroupsData=[
+  {name:"Révision arabe — Samedi 10h",members:5,max:8,sub:'arabic'},
+  {name:"Maths bac — Dimanche 14h",members:3,max:6,sub:'math'},
+];
+
+function renderCommunity(){
+  // Salons
+  document.getElementById('communityRooms').innerHTML=rooms.map(r=>`
+    <div onclick="selectRoom('${r.id}','${r.label}')" style="display:flex;align-items:center;gap:10px;padding:.7rem .8rem;border-radius:10px;cursor:pointer;transition:background .15s;margin-bottom:4px" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+      <div style="width:8px;height:8px;border-radius:50%;background:${r.color};flex-shrink:0"></div>
+      <span style="font-size:13px;font-weight:500;flex:1">${r.label}</span>
+      <span style="font-size:11px;color:var(--green);font-weight:600">● ${r.online}</span>
+    </div>`).join('');
+
+  // Classement
+  document.getElementById('leaderboard').innerHTML=leaderboardData.map(p=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:.6rem 0;border-bottom:1px solid var(--border)">
+      <div style="width:24px;text-align:center;font-size:14px">${p.medal||p.rank}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${p.name} ${p.country}</div>
+      </div>
+      <div style="font-family:'DM Serif Display',serif;font-size:15px;color:var(--blue)">${p.pts} pts</div>
+    </div>`).join('');
+
+  // Q&R
+  document.getElementById('qrList').innerHTML=qrData.map((q,i)=>`
+    <div style="background:var(--bg);border-radius:10px;padding:.8rem;margin-bottom:.6rem;cursor:pointer" onclick="showToast('💬 ${q.ans} réponse(s) disponibles')">
+      <div style="font-size:12px;font-weight:600;margin-bottom:4px">${q.q}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:var(--muted)">${q.time}</span>
+        <span style="font-size:11px;background:${q.solved?'var(--green-light)':'var(--gold-light)'};color:${q.solved?'#065F46':'#92400E'};padding:2px 8px;border-radius:10px;font-weight:600">${q.solved?'✅ Résolu':'⏳ '+q.ans+' rép.'}</span>
+      </div>
+    </div>`).join('');
+
+  // Groupes
+  document.getElementById('revGroups').innerHTML=revGroupsData.map(g=>`
+    <div style="background:var(--bg);border-radius:10px;padding:.8rem;margin-bottom:.6rem;display:flex;align-items:center;gap:10px">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;margin-bottom:3px">${g.name}</div>
+        <div style="font-size:11px;color:var(--muted)">👥 ${g.members}/${g.max} élèves</div>
+      </div>
+      <button onclick="showToast('✅ Groupe rejoint !')" style="padding:6px 12px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Rejoindre</button>
+    </div>`).join('');
+}
+
+function selectRoom(id,label){
+  document.getElementById('activeRoomTitle').textContent=label;
+  showToast('💬 Salon '+label+' rejoint !');
+}
+
+function sendCommunityMsg(){
+  const inp=document.getElementById('communityInput');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  const chat=document.getElementById('communityChat');
+  chat.innerHTML+=`
+    <div style="display:flex;gap:10px;align-items:flex-start;justify-content:flex-end">
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:3px;text-align:right">Ahmed B. · France · maintenant</div>
+        <div style="background:var(--blue);color:white;border-radius:12px 4px 12px 12px;padding:9px 13px;font-size:13px;max-width:280px">${msg}</div>
+      </div>
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0D1526;flex-shrink:0">AH</div>
+    </div>`;
+  inp.value='';
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function openQR(){
+  const q=prompt('Quelle est ta question pour la communauté ?');
+  if(!q)return;
+  qrData.unshift({q,sub:'general',ans:0,time:'maintenant',solved:false});
+  renderCommunity();
+  showToast('✅ Question publiée !');
+}
+
+// ══ TOAST ══
+function showToast(msg){
+  document.

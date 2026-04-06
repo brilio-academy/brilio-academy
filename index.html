@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brilio Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#1A6BFF; --blue-light:#EBF1FF; --blue-dark:#0D3D99;
+  --gold:#EF9F27; --gold-light:#FEF6E7;
+  --text:#0D1526; --muted:#6B7A99; --border:#E2E8F4;
+  --bg:#F5F8FF; --white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:200;
+  background:var(--white);border-bottom:1px solid var(--border);
+  height:66px;display:flex;align-items:center;
+  padding:0 2.5rem;gap:1.5rem;
+  box-shadow:0 2px 16px rgba(26,107,255,0.07);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.nav-logo svg{width:36px;height:36px;}
+.logo-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--blue-dark);letter-spacing:2px;line-height:1.1;}
+.logo-sub{font-size:9px;font-weight:600;letter-spacing:4px;color:var(--gold);text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1;justify-content:center;}
+.nl{padding:7px 13px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:all .2s;white-space:nowrap;}
+.nl:hover,.nl.active{color:var(--blue);background:var(--blue-light);}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.lang-sel{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:500;color:var(--text);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;outline:none;}
+.btn-in{padding:8px 16px;border:1.5px solid var(--blue);border-radius:9px;background:none;color:var(--blue);font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-in:hover{background:var(--blue-light);}
+.btn-up{padding:8px 16px;border:none;border-radius:9px;background:var(--blue);color:white;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-up:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,107,255,.3);}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#0D1F5C 0%,#1A6BFF 55%,#1A9EC0 100%);
+  padding:5rem 3rem 4rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(239,159,39,.12) 0%,transparent 60%);}
+.hero-text{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:rgba(239,159,39,.2);border:1px solid rgba(239,159,39,.4);border-radius:20px;font-size:12px;font-weight:500;color:#FAC775;margin-bottom:1.5rem;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(30px,3.5vw,50px);color:white;line-height:1.2;margin-bottom:1.2rem;}
+.hero h1 em{color:#FAC775;font-style:normal;}
+.hero-desc{font-size:15px;color:rgba(255,255,255,.75);line-height:1.75;margin-bottom:2rem;max-width:460px;}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{padding:13px 26px;background:var(--gold);color:#0D1526;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-gold:hover{background:#d48e1a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,159,39,.4);}
+.btn-ghost{padding:13px 26px;background:rgba(255,255,255,.12);color:white;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-ghost:hover{background:rgba(255,255,255,.2);}
+
+/* MEDIA BOX */
+.hero-media{position:relative;z-index:1;}
+.media-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;}
+.media-box:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.media-inner{display:flex;flex-direction:column;align-items:center;gap:1rem;color:white;text-align:center;padding:2rem;}
+.play-btn{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s;}
+.media-box:hover .play-btn{background:var(--gold);border-color:var(--gold);}
+.media-lbl{font-size:14px;font-weight:500;opacity:.85;}
+.media-sub{font-size:12px;opacity:.5;}
+
+/* SECTION */
+.sec{padding:4rem 3rem;}
+.sec-alt{background:var(--bg);}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;}
+.sec-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text);}
+.sec-title span{color:var(--blue);}
+.see-all{font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;padding:6px 14px;border:1px solid var(--blue);border-radius:8px;transition:all .2s;}
+.see-all:hover{background:var(--blue);color:white;}
+
+/* NEWS */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;}
+.nc{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s;cursor:pointer;}
+.nc:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,107,255,.1);border-color:var(--blue);}
+.nc-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.nc-img.arabic{background:linear-gradient(135deg,#FEF3C7,#FDE68A);}
+.nc-img.sciences{background:linear-gradient(135deg,#EEF2FF,#C7D2FE);}
+.nc-img.event{background:linear-gradient(135deg,#ECFDF5,#A7F3D0);}
+.nc-body{padding:1.2rem;}
+.nc-tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.t-ar{background:#FEF3C7;color:#92400E;}
+.t-sc{background:#EEF2FF;color:#3730A3;}
+.t-ev{background:#ECFDF5;color:#065F46;}
+.nc h4{font-size:14px;font-weight:600;margin-bottom:5px;line-height:1.4;}
+.nc p{font-size:13px;color:var(--muted);line-height:1.5;}
+.nc-date{font-size:11px;color:var(--muted);margin-top:10px;}
+
+/* PROGRAMMES */
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;}
+.pc{border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;transition:all .25s;position:relative;overflow:hidden;}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.pc.ar::before{background:linear-gradient(90deg,#EF9F27,#F5C842);}
+.pc.ma::before{background:linear-gradient(90deg,#1A6BFF,#5B9BFF);}
+.pc.sc::before{background:linear-gradient(90deg,#10B981,#34D399);}
+.pc.eu::before{background:linear-gradient(90deg,#8B5CF6,#A78BFA);}
+.pc:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:transparent;}
+.pc-icon{font-size:34px;margin-bottom:1rem;}
+.pc h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+.pc p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1.2rem;}
+.pc-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:var(--bg);color:var(--muted);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.about-text h2{font-family:'DM Serif Display',serif;font-size:30px;margin-bottom:1rem;line-height:1.3;}
+.about-text h2 span{color:var(--blue);}
+.about-text p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:.8rem;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.as{background:white;border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;}
+.as-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--blue);}
+.as-lbl{font-size:11px;color:var(--muted);margin-top:4px;}
+.about-visual{background:linear-gradient(135deg,#0D1F5C,#1A6BFF);border-radius:20px;padding:2.5rem;color:white;position:relative;overflow:hidden;}
+.about-visual::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);top:-60px;right:-60px;}
+.about-visual h3{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:1.2rem;position:relative;}
+.mi{display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;}
+.mi-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:5px;flex-shrink:0;}
+.mi p{font-size:14px;opacity:.85;line-height:1.5;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:start;}
+.cf{background:var(--bg);border-radius:16px;padding:2rem;}
+.fg{margin-bottom:1rem;}
+.fg label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+.fg input,.fg textarea,.fg select{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;transition:all .2s;resize:vertical;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,107,255,.1);}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-send{width:100%;padding:12px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;margin-top:.5rem;}
+.btn-send:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,107,255,.3);}
+.ci h3{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:1.5rem;}
+.ci-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:1.5rem;}
+.ci-icon{width:42px;height:42px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ci-item strong{display:block;font-size:14px;margin-bottom:2px;}
+.ci-item span{font-size:13px;color:var(--muted);}
+.socials{display:flex;gap:10px;margin-top:1.5rem;}
+.sb{width:42px;height:42px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .2s;text-decoration:none;background:white;}
+.sb:hover{border-color:var(--blue);background:var(--blue-light);transform:translateY(-2px);}
+
+/* FOOTER */
+footer{background:#0D1526;color:white;padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.fl{font-family:'DM Serif Display',serif;font-size:16px;letter-spacing:2px;}
+.fl span{color:var(--gold);font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:4px;display:block;}
+.fc{font-size:12px;color:rgba(255,255,255,.4);}
+.flinks{display:flex;gap:16px;}
+.flinks a{font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:white;}
+
+/* MODALS */
+.mo{display:none;position:fixed;inset:0;background:rgba(13,21,38,.55);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.mo.show{display:flex;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.md{background:white;border-radius:20px;padding:2.5rem;max-width:420px;width:90%;animation:si .25s ease;position:relative;}
+@keyframes si{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.mc{position:absolute;top:16px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;}
+.mc:hover{background:var(--bg);}
+.md h3{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:5px;}
+.md-sub{font-size:13px;color:var(--muted);margin-bottom:1.8rem;}
+.md-sub a{color:var(--blue);text-decoration:none;font-weight:500;}
+.btn-ms{width:100%;padding:12px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;margin-top:1rem;}
+.btn-ms:hover{background:var(--blue-dark);}
+.fgt{text-align:right;font-size:12px;margin-top:4px;}
+.fgt a{color:var(--blue);text-decoration:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#0D1526;color:white;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;display:none;align-items:center;gap:10px;z-index:400;box-shadow:0 8px 30px rgba(0,0,0,.3);}
+.toast.show{display:flex;animation:su .3s ease;}
+@keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+@media(max-width:900px){
+  nav{padding:0 1rem;gap:.8rem;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:3rem 1.5rem;}
+  .hero-media{order:-1;}
+  .about-grid,.contact-grid{grid-template-columns:1fr;}
+  .sec{padding:3rem 1.5rem;}
+  footer{flex-direction:column;padding:2rem 1.5rem;}
+}
+@media(max-width:600px){
+  .fr2{grid-template-columns:1fr;}
+  .hero h1{font-size:26px;}
+  .btn-in span,.btn-up span{display:none;}
+}
+</style>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtEVZ_G_Ad73tmGkIhD21FSPvycudjhpU",
+    authDomain: "brilio-academy.firebaseapp.com",
+    databaseURL: "https://brilio-academy-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "brilio-academy",
+    storageBucket: "brilio-academy.firebasestorage.app",
+    messagingSenderId: "790154339807",
+    appId: "1:790154339807:web:8156c1ccd17b38ff30906a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Connexion élève
+  window.connecterEleve = async function() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPw').value;
+    if(!email || !password) { alert('⚠️ Remplis tous les champs !'); return; }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = 'espace-eleve.html';
+    } catch (error) {
+      if(error.code === 'auth/user-not-found') alert('❌ Email non trouvé !');
+      else if(error.code === 'auth/wrong-password') alert('❌ Mot de passe incorrect !');
+      else alert('❌ Erreur de connexion : ' + error.message);
+    }
+  }
+</script>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" fill="#1A6BFF"/>
+      <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+      <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(60 20 20)"/>
+      <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(120 20 20)"/>
+      <circle cx="20" cy="20" r="3.5" fill="#EF9F27"/>
+      <circle cx="34" cy="20" r="2" fill="white"/>
+      <circle cx="13" cy="26" r="2" fill="white"/>
+    </svg>
+    <div><div class="logo-name">BRILIO</div><div class="logo-sub">Academy</div></div>
+  </a>
+
+  <div class="nav-links">
+    <a class="nl active" href="#" data-i18n="n_home">Accueil</a>
+    <a class="nl" href="#programmes" data-i18n="n_prog">Programmes</a>
+    <a class="nl" href="#actualites" data-i18n="n_news">Actualités</a>
+    <a class="nl" href="#about" data-i18n="n_about">À propos</a>
+    <a class="nl" href="#contact" data-i18n="n_contact">Contact</a>
+  </div>
+
+  <div class="nav-right">
+    <select class="lang-sel" onchange="setLang(this.value)">
+      <option value="fr">🇫🇷 Français</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="en">🇬🇧 English</option>
+    </select>
+    <a class="btn-in" href="#" onclick="openM('mLogin',event)" data-i18n="n_login">Se connecter</a>
+    <a class="btn-up" href="#" onclick="openM('mReg',event)" data-i18n="n_reg">Créer un compte</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">🌍 <span data-i18n="h_badge">France · Espagne · Italie · Europe</span></div>
+    <h1><em data-i18n="h_t1">Apprendre l'arabe</em> <span data-i18n="h_t2">&amp; exceller en sciences,</span><br><span data-i18n="h_t3">partout en Europe</span></h1>
+    <p class="hero-desc" data-i18n="h_desc">Cours d'arabe pour enfants arabes en Europe · Maths, Physique et Chimie pour tous les élèves · Cours particuliers 100% en ligne.</p>
+    <div class="hero-cta">
+      <a class="btn-gold" href="#" onclick="openM('mReg',event)" data-i18n="h_cta1">✏️ Créer un compte</a>
+      <a class="btn-ghost" href="#programmes" data-i18n="h_cta2">📚 Nos programmes</a>
+    </div>
+  </div>
+  <div class="hero-media">
+    <div class="media-box" onclick="playVid()">
+      <div class="media-inner" id="mediaInner">
+        <div class="play-btn">▶</div>
+        <div class="media-lbl" data-i18n="m_lbl">Présentation de Brilio Academy</div>
+        <div class="media-sub" data-i18n="m_sub">Cliquez pour regarder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTUALITÉS -->
+<section class="sec sec-alt" id="actualites">
+  <div class="sec-hd">
+    <h2 class="sec-title" data-i18n="s_news">Actualités <span>&amp; Annonces</span></h2>
+    <a href="#" class="see-all" data-i18n="s_all">Voir tout</a>
+  </div>
+  <div class="news-grid">
+    <div class="nc"><div class="nc-img arabic">📢</div>
+      <div class="nc-body"><span class="nc-tag t-ar" data-i18n="t_ar">Arabe</span>
+        <h4 data-i18n="n1t">Ouverture des inscriptions — Été 2025</h4>
+        <p data-i18n="n1d">Les inscriptions pour le programme intensif d'arabe sont ouvertes. Places limitées !</p>
+        <div class="nc-date">📅 01 Avril 2025</div>
+      </div>
+    </div>
+    <div class="nc"><div class="nc-img sciences">🔬</div>
+      <div class="nc-body"><span class="nc-tag t-sc" data-i18n="t_sc">Sciences</span>
+        <h4 data-i18n="n2t">Nouveau : Cours de chimie lycée</h4>
+        <p data-i18n="n2d">Brilio lance ses cours de chimie pour lycéens. Premier cours gratuit !</p>
+        <div class="nc-date">📅 20 Mars 2025</div>
+      </div>
+    </div>
+    <div class="nc"><div class="nc-img event">🎉</div>
+      <div class="nc-body"><span class="nc-tag t-ev" data-i18n="t_ev">Événement</span>
+        <h4 data-i18n="n3t">Portes ouvertes virtuelles</h4>
+        <p data-i18n="n3d">Participez à notre journée portes ouvertes en ligne et découvrez nos programmes.</p>
+        <div class="nc-date">📅 15 Mars 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMMES -->
+<section class="sec" id="programmes">
+  <div class="sec-hd">
+    <h2 class="sec-title">Nos <span data-i18n="s_prog">Programmes</span></h2>
+  </div>
+  <div class="prog-grid">
+    <div class="pc ar"><div class="pc-icon">📖</div>
+      <h3 data-i18n="p1">Cours d'arabe</h3>
+      <p data-i18n="p1d">Programme d'été intensif pour enfants arabes vivant en Europe. Lecture, écriture et culture.</p>
+      <span class="pc-badge" data-i18n="p1b">☀️ Programme d'été</span>
+    </div>
+    <div class="pc ma"><div class="pc-icon">➗</div>
+      <h3 data-i18n="p2">Mathématiques</h3>
+      <p data-i18n="p2d">Cours particuliers en visio pour tous les niveaux : collège, lycée et supérieur.</p>
+      <span class="pc-badge" data-i18n="p2b">📅 Toute l'année</span>
+    </div>
+    <div class="pc sc"><div class="pc-icon">⚛️</div>
+      <h3 data-i18n="p3">Physique & Chimie</h3>
+      <p data-i18n="p3d">Cours individuels adaptés aux programmes européens. Exercices et corrections personnalisées.</p>
+      <span class="pc-badge" data-i18n="p3b">📅 Toute l'année</span>
+    </div>
+    <div class="pc eu"><div class="pc-icon">🌍</div>
+      <h3 data-i18n="p4">Tous les élèves</h3>
+      <p data-i18n="p4d">Nos cours de sciences sont ouverts à tous, quelle que soit l'origine ou la nationalité.</p>
+      <span class="pc-badge" data-i18n="p4b">🌍 Toute l'Europe</span>
+    </div>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section class="sec sec-alt" id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>À propos de <span>Brilio Academy</span></h2>
+      <p data-i18n="ab1">Brilio Academy est une école en ligne créée pour répondre aux besoins des familles arabes et étrangères vivant en Europe. Nous croyons que chaque enfant mérite un accès à une éducation de qualité.</p>
+      <p data-i18n="ab2">Fondée par un étudiant entrepreneur passionné d'enseignement, nous proposons des cours particuliers en visioconférence accessibles depuis la France, l'Espagne, l'Italie et toute l'Europe.</p>
+      <div class="about-stats">
+        <div class="as"><div class="as-num">4</div><div class="as-lbl" data-i18n="st1">Langues disponibles</div></div>
+        <div class="as"><div class="as-num">100%</div><div class="as-lbl" data-i18n="st2">En ligne</div></div>
+        <div class="as"><div class="as-num">🇪🇺</div><div class="as-lbl" data-i18n="st3">Partout en Europe</div></div>
+        <div class="as"><div class="as-num">∞</div><div class="as-lbl" data-i18n="st4">Tous niveaux</div></div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <h3 data-i18n="ms_t">Notre mission</h3>
+      <div class="mi"><div class="mi-dot"></div><p data-i18n="ms1">Préserver la langue arabe chez les enfants de la diaspora en Europe</p></div>
+      <div class="mi"><div class="mi-dot"></div><p data-i18n="ms2">Aider tous les élèves à réussir en maths, physique et chimie</p></div>
+      <div class="mi"><div class="mi-dot"></div><p data-i18n="ms3">Offrir des cours de qualité à des tarifs accessibles</p></div>
+      <div class="mi"><div class="mi-dot"></div><p data-i18n="ms4">Rendre l'éducation accessible partout en Europe via le numérique</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="sec-hd">
+    <h2 class="sec-title">Nous <span data-i18n="s_contact">contacter</span></h2>
+  </div>
+  <div class="contact-grid">
+    <div class="cf">
+      <div class="fr2">
+        <div class="fg"><label data-i18n="f_nom">Nom</label><input type="text" placeholder="Ben Ali"/></div>
+        <div class="fg"><label data-i18n="f_pre">Prénom</label><input type="text" placeholder="Ahmed"/></div>
+      </div>
+      <div class="fg"><label data-i18n="f_em">Email</label><input type="email" placeholder="exemple@email.com"/></div>
+      <div class="fg">
+        <label data-i18n="f_suj">Sujet</label>
+        <select>
+          <option data-i18n="fs1">Inscription à un cours</option>
+          <option data-i18n="fs2">Informations sur les programmes</option>
+          <option data-i18n="fs3">Tarifs</option>
+          <option data-i18n="fs4">Autre</option>
+        </select>
+      </div>
+      <div class="fg"><label data-i18n="f_msg">Message</label><textarea rows="4" placeholder="Votre message..."></textarea></div>
+      <button class="btn-send" onclick="showToast()" data-i18n="f_snd">Envoyer le message →</button>
+    </div>
+    <div class="ci">
+      <h3 data-i18n="ci_t">Informations</h3>
+      <div class="ci-item"><div class="ci-icon">📧</div><div><strong>Email</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b3834352f3a382f1b392932373234763a383a3f3e362275383436">[email&#160;protected]</a></span></div></div>
+      <div class="ci-item"><div class="ci-icon">🌐</div><div><strong data-i18n="ci_z">Zone</strong><span data-i18n="ci_zv">France · Espagne · Italie · Europe</span></div></div>
+      <div class="ci-item"><div class="ci-icon">⏰</div><div><strong data-i18n="ci_h">Disponibilité</strong><span data-i18n="ci_hv">Lun–Sam · 9h – 20h</span></div></div>
+      <div class="ci-item"><div class="ci-icon">💬</div><div><strong data-i18n="ci_l">Langues</strong><span data-i18n="ci_lv">Français · Arabe · Espagnol · Anglais</span></div></div>
+      <div class="socials">
+        <a class="sb" href="#" title="Facebook">📘</a>
+        <a class="sb" href="#" title="Instagram">📸</a>
+        <a class="sb" href="#" title="WhatsApp">💬</a>
+        <a class="sb" href="#" title="YouTube">▶️</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div><div class="fl">BRILIO<span>ACADEMY</span></div></div>
+  <div class="fc" data-i18n="f_copy">© 2025 Brilio Academy · Tous droits réservés</div>
+  <div class="flinks">
+    <a href="#" data-i18n="f_cgu">CGU</a>
+    <a href="#" data-i18n="f_prv">Confidentialité</a>
+    <a href="#contact" data-i18n="f_cnt">Contact</a>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="mo" id="mLogin">
+  <div class="md">
+    <button class="mc" onclick="closeM('mLogin')">✕</button>
+    <h3 data-i18n="ml_t">Connexion</h3>
+    <p class="md-sub"><span data-i18n="ml_s">Pas encore de compte ?</span> <a href="#" onclick="switchM('mLogin','mReg')" data-i18n="ml_a">Créer un compte</a></p>
+    <div class="fg"><label data-i18n="f_em">Email</label><input type="email" id="loginEmail" placeholder="exemple@email.com"/></div>
+    <div class="fg">
+      <label data-i18n="f_pw">Mot de passe</label>
+      <input type="password" id="loginPw" placeholder="••••••••"/>
+      <div class="fgt"><a href="#" data-i18n="ml_fgt">Mot de passe oublié ?</a></div>
+    </div>
+    <button class="btn-ms" onclick="connecterEleve()" data-i18n="ml_btn">Se connecter →</button>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="mo" id="mReg">
+  <div class="md">
+    <button class="mc" onclick="closeM('mReg')">✕</button>
+    <h3 data-i18n="mr_t">Créer un compte</h3>
+    <p class="md-sub"><span data-i18n="mr_s">Déjà inscrit ?</span> <a href="#" onclick="switchM('mReg','mLogin')" data-i18n="mr_a">Se connecter</a></p>
+    <div class="fr2">
+      <div class="fg"><label data-i18n="f_nom">Nom</label><input type="text" placeholder="Ben Ali"/></div>
+      <div class="fg"><label data-i18n="f_pre">Prénom</label><input type="text" placeholder="Ahmed"/></div>
+    </div>
+    <div class="fg"><label data-i18n="f_em">Email</label><input type="email" placeholder="exemple@email.com"/></div>
+    <div class="fg"><label data-i18n="f_pw">Mot de passe</label><input type="password" placeholder="••••••••"/></div>
+    <button class="btn-ms" onclick="closeM('mReg');showToast('reg')" data-i18n="mr_btn">Créer mon compte →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ <span id="tMsg">Message envoyé !</span></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const T={
+  fr:{n_home:"Accueil",n_prog:"Programmes",n_news:"Actualités",n_about:"À propos",n_contact:"Contact",n_login:"Se connecter",n_reg:"Créer un compte",
+    h_badge:"France · Espagne · Italie · Europe",h_t1:"Apprendre l'arabe",h_t2:"& exceller en sciences,",h_t3:"partout en Europe",
+    h_desc:"Cours d'arabe pour enfants arabes en Europe · Maths, Physique et Chimie pour tous les élèves · Cours particuliers 100% en ligne.",
+    h_cta1:"✏️ Créer un compte",h_cta2:"📚 Nos programmes",
+    m_lbl:"Présentation de Brilio Academy",m_sub:"Cliquez pour regarder",
+    s_news:"Actualités",s_all:"Voir tout",s_prog:"Programmes",s_contact:"contacter",
+    t_ar:"Arabe",t_sc:"Sciences",t_ev:"Événement",
+    n1t:"Ouverture des inscriptions — Été 2025",n1d:"Les inscriptions pour le programme intensif d'arabe sont ouvertes. Places limitées !",
+    n2t:"Nouveau : Cours de chimie lycée",n2d:"Brilio lance ses cours de chimie pour lycéens. Premier cours gratuit !",
+    n3t:"Portes ouvertes virtuelles",n3d:"Participez à notre journée portes ouvertes en ligne et découvrez nos programmes.",
+    p1:"Cours d'arabe",p1d:"Programme d'été intensif pour enfants arabes vivant en Europe.",p1b:"☀️ Programme d'été",
+    p2:"Mathématiques",p2d:"Cours particuliers en visio pour tous les niveaux.",p2b:"📅 Toute l'année",
+    p3:"Physique & Chimie",p3d:"Cours individuels adaptés aux programmes européens.",p3b:"📅 Toute l'année",
+    p4:"Tous les élèves",p4d:"Nos cours de sciences sont ouverts à tous, quelle que soit l'origine.",p4b:"🌍 Toute l'Europe",
+    ab1:"Brilio Academy est une école en ligne créée pour les familles arabes et étrangères en Europe.",
+    ab2:"Fondée par un étudiant entrepreneur passionné, nous proposons des cours en visioconférence depuis toute l'Europe.",
+    st1:"Langues disponibles",st2:"En ligne",st3:"Partout en Europe",st4:"Tous niveaux",
+    ms_t:"Notre mission",ms1:"Préserver la langue arabe chez les enfants de la diaspora",ms2:"Aider tous les élèves à réussir en sciences",ms3:"Offrir des cours de qualité à tarifs accessibles",ms4:"Rendre l'éducation accessible via le numérique",
+    f_nom:"Nom",f_pre:"Prénom",f_em:"Email",f_pw:"Mot de passe",f_suj:"Sujet",fs1:"Inscription",fs2:"Informations",fs3:"Tarifs",fs4:"Autre",f_msg:"Message",f_snd:"Envoyer le message →",
+    ci_t:"Informations",ci_z:"Zone",ci_zv:"France · Espagne · Italie · Europe",ci_h:"Disponibilité",ci_hv:"Lun–Sam · 9h – 20h",ci_l:"Langues",ci_lv:"Français · Arabe · Espagnol · Anglais",
+    f_copy:"© 2025 Brilio Academy · Tous droits réservés",f_cgu:"CGU",f_prv:"Confidentialité",f_cnt:"Contact",
+    ml_t:"Connexion",ml_s:"Pas encore de compte ?",ml_a:"Créer un compte",ml_fgt:"Mot de passe oublié ?",ml_btn:"Se connecter →",
+    mr_t:"Créer un compte",mr_s:"Déjà inscrit ?",mr_a:"Se connecter",mr_btn:"Créer mon compte →",
+    toast_ok:"Message envoyé !",toast_reg:"Compte créé ! Bienvenue 🎉"},
+  ar:{n_home:"الرئيسية",n_prog:"البرامج",n_news:"الأخبار",n_about:"من نحن",n_contact:"اتصل بنا",n_login:"تسجيل الدخول",n_reg:"إنشاء حساب",
+    h_badge:"فرنسا · إسبانيا · إيطاليا · أوروبا",h_t1:"تعلم اللغة العربية",h_t2:"والتفوق في العلوم",h_t3:"في كل أنحاء أوروبا",
+    h_desc:"دروس عربية للأطفال العرب في أوروبا · رياضيات وفيزياء وكيمياء لجميع المستويات",
+    h_cta1:"✏️ إنشاء حساب",h_cta2:"📚 برامجنا",m_lbl:"تعرف على Brilio Academy",m_sub:"انقر للمشاهدة",
+    s_news:"الأخبار",s_all:"عرض الكل",s_prog:"البرامج",s_contact:"تواصل معنا",
+    f_copy:"© 2025 Brilio Academy · جميع الحقوق محفوظة",
+    ml_t:"تسجيل الدخول",ml_s:"ليس لديك حساب؟",ml_a:"إنشاء حساب",ml_fgt:"نسيت كلمة المرور؟",ml_btn:"تسجيل الدخول ←",
+    mr_t:"إنشاء حساب",mr_s:"لديك حساب؟",mr_a:"تسجيل الدخول",mr_btn:"إنشاء حسابي ←",
+    f_nom:"اسم العائلة",f_pre:"الاسم الأول",f_em:"البريد الإلكتروني",f_pw:"كلمة المرور",f_snd:"إرسال ←",
+    toast_ok:"تم الإرسال!",toast_reg:"تم إنشاء الحساب! أهلاً 🎉"},
+  es:{n_home:"Inicio",n_prog:"Programas",n_news:"Noticias",n_about:"Nosotros",n_contact:"Contacto",n_login:"Iniciar sesión",n_reg:"Crear cuenta",
+    h_badge:"Francia · España · Italia · Europa",h_t1:"Aprender árabe",h_t2:"y destacar en ciencias,",h_t3:"en toda Europa",
+    h_desc:"Clases de árabe para niños árabes en Europa · Matemáticas, Física y Química para todos los niveles.",
+    h_cta1:"✏️ Crear cuenta",h_cta2:"📚 Programas",m_lbl:"Presentación de Brilio Academy",m_sub:"Haz clic para ver",
+    s_news:"Noticias",s_all:"Ver todo",s_prog:"Programas",s_contact:"Contáctanos",
+    f_copy:"© 2025 Brilio Academy · Todos los derechos reservados",
+    ml_t:"Iniciar sesión",ml_s:"¿Sin cuenta?",ml_a:"Crear una",ml_fgt:"¿Olvidaste tu contraseña?",ml_btn:"Iniciar sesión →",
+    mr_t:"Crear cuenta",mr_s:"¿Ya tienes cuenta?",mr_a:"Iniciar sesión",mr_btn:"Crear mi cuenta →",
+    f_nom:"Apellido",f_pre:"Nombre",f_em:"Email",f_pw:"Contraseña",f_snd:"Enviar →",
+    toast_ok:"¡Mensaje enviado!",toast_reg:"¡Cuenta creada! Bienvenido 🎉"},
+  en:{n_home:"Home",n_prog:"Programs",n_news:"News",n_about:"About",n_contact:"Contact",n_login:"Sign in",n_reg:"Create account",
+    h_badge:"France · Spain · Italy · Europe",h_t1:"Learn Arabic",h_t2:"& excel in sciences,",h_t3:"everywhere in Europe",
+    h_desc:"Arabic classes for Arab children in Europe · Maths, Physics and Chemistry for all levels, all year long.",
+    h_cta1:"✏️ Create account",h_cta2:"📚 Programs",m_lbl:"Brilio Academy presentation",m_sub:"Click to watch",
+    s_news:"News",s_all:"See all",s_prog:"Programs",s_contact:"Contact us",
+    f_copy:"© 2025 Brilio Academy · All rights reserved",
+    ml_t:"Sign in",ml_s:"No account yet?",ml_a:"Create one",ml_fgt:"Forgot password?",ml_btn:"Sign in →",
+    mr_t:"Create account",mr_s:"Already registered?",mr_a:"Sign in",mr_btn:"Create my account →",
+    f_nom:"Last name",f_pre:"First name",f_em:"Email",f_pw:"Password",f_snd:"Send →",
+    toast_ok:"Message sent!",toast_reg:"Account created! Welcome 🎉"}
+};
+
+let lang='fr';
+function setLang(l){
+  lang=l;
+  const t=T[l];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t&&t[k])el.textContent=t[k];
+  });
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+}
+function openM(id,e){if(e)e.preventDefault();document.getElementById(id).classList.add('show');}
+function closeM(id){document.getElementById(id).classList.remove('show');}
+function switchM(from,to){closeM(from);setTimeout(()=>openM(to),150);}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+function showToast(type){
+  const t=T[lang]||T.fr;
+  document.getElementById('tMsg').textContent=type==='reg'?(t.toast_reg||T.fr.toast_reg):(t.toast_ok||T.fr.toast_ok);
+  const el=document.getElementById('toast');
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+function playVid(){
+  document.getElementById('mediaInner').innerHTML=`
+    <div style="color:white;text-align:center;padding:2rem">
+      <div style="font-size:48px;margin-bottom

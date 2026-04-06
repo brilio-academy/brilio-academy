@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brilio Academy — Inscription</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1A6BFF;
+    --blue-light: #EBF1FF;
+    --blue-dark: #0D3D99;
+    --gold: #EF9F27;
+    --gold-light: #FEF6E7;
+    --text: #0D1526;
+    --text-muted: #6B7A99;
+    --border: #E2E8F4;
+    --white: #FFFFFF;
+    --bg: #F5F8FF;
+    --error: #E53E3E;
+    --success: #1A9E6B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* NAVBAR */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav-logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--blue-dark);
+    letter-spacing: 1px;
+  }
+
+  .nav-logo-text span {
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    display: block;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .lang-switcher {
+    display: flex;
+    gap: 4px;
+  }
+
+  .lang-btn {
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .lang-btn:hover, .lang-btn.active {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+  }
+
+  /* MAIN */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 960px;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 0;
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(26,107,255,0.10);
+    border: 1px solid var(--border);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LEFT PANEL */
+  .panel-left {
+    background: linear-gradient(160deg, #1A3A8F 0%, #1A6BFF 100%);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel-left::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    top: -80px;
+    right: -80px;
+  }
+
+  .panel-left::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(239,159,39,0.15);
+    bottom: -50px;
+    left: -50px;
+  }
+
+  .panel-logo {
+    position: relative;
+    z-index: 1;
+  }
+
+  .panel-logo svg {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1rem;
+  }
+
+  .panel-logo h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: white;
+    letter-spacing: 2px;
+  }
+
+  .panel-logo p {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .panel-features {
+    position: relative;
+    z-index: 1;
+  }
+
+  .panel-features h2 {
+    font-size: 22px;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 1.2rem;
+  }
+
+  .feature-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+
+  .feature-text strong {
+    display: block;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .feature-text span {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+  }
+
+  .panel-langs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .lang-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* RIGHT PANEL - FORM */
+  .panel-right {
+    padding: 3rem 2.5rem;
+    overflow-y: auto;
+  }
+
+  .form-header {
+    margin-bottom: 2rem;
+  }
+
+  .form-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .form-header p {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .form-header p a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Photo upload */
+  .photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+    padding: 1rem;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .photo-upload:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .photo-preview {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+  }
+
+  .photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  .photo-preview svg {
+    width: 28px;
+    height: 28px;
+    color: var(--blue);
+  }
+
+  .photo-info strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .photo-info span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Form grid */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  label .required {
+    color: var(--blue);
+    margin-left: 2px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: white;
+    transition: all 0.2s;
+    outline: none;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(26,107,255,0.1);
+  }
+
+  input.error { border-color: var(--error); }
+  input.success { border-color: var(--success); }
+
+  .input-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .password-wrapper {
+    position: relative;
+  }
+
+  .password-wrapper input {
+    padding-right: 40px;
+  }
+
+  .toggle-pw {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  /* Password strength */
+  .pw-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .pw-bar {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+
+  .pw-bar.weak   { background: var(--error); }
+  .pw-bar.medium { background: var(--gold); }
+  .pw-bar.strong { background: var(--success); }
+
+  /* Checkbox */
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 0.5rem;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--blue);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .checkbox-group label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .checkbox-group label a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* Submit */
+  .btn-submit {
+    width: 100%;
+    padding: 13px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1.5rem;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-submit:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,107,255,0.3);
+  }
+
+  .btn-submit:active {
+    transform: translateY(0);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1.2rem 0;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Success modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13,21,38,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.show {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    animation: scaleIn 0.3s ease;
+  }
+
+  @keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #ECFDF5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 32px;
+  }
+
+  .modal h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .modal p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-modal {
+    padding: 11px 28px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-modal:hover { background: var(--blue-dark); }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .container { grid-template-columns: 1fr; }
+    .panel-left { padding: 2rem; }
+    .panel-right { padding: 2rem 1.5rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+  }
+</style>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtEVZ_G_Ad73tmGkIhD21FSPvycudjhpU",
+    authDomain: "brilio-academy.firebaseapp.com",
+    databaseURL: "https://brilio-academy-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "brilio-academy",
+    storageBucket: "brilio-academy.firebasestorage.app",
+    messagingSenderId: "790154339807",
+    appId: "1:790154339807:web:8156c1ccd17b38ff30906a",
+    measurementId: "G-HY3CELW4L3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  // Fonction d'inscription
+  window.inscrireEleve = async function(e) {
+    e.preventDefault();
+    const nom = document.getElementById('nom').value;
+    const prenom = document.getElementById('prenom').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+    const pays = document.getElementById('pays').value;
+
+    try {
+      // Créer le compte
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Sauvegarder les infos dans la base de données
+      await set(ref(db, 'eleves/' + user.uid), {
+        nom, prenom, email, dob, pays,
+        dateInscription: new Date().toISOString(),
+        programme: []
+      });
+
+      // Rediriger vers la page de paiement
+      alert('✅ Compte créé avec succès ! Bienvenue ' + prenom + ' !');
+      window.location.href = 'paiement.html';
+
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('❌ Cet email est déjà utilisé !');
+      } else if (error.code === 'auth/weak-password') {
+        alert('❌ Mot de passe trop faible ! Minimum 6 caractères.');
+      } else {
+        alert('❌ Erreur : ' + error.message);
+      }
+    }
+  }
+</script>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg class="nav-logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="18" fill="#1A6BFF"/>
+      <ellipse cx="20" cy="20" rx="14" ry="6" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+      <ellipse cx="20" cy="20" rx="14" ry="6" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(60 20 20)"/>
+      <ellipse cx="20" cy="20" rx="14" ry="6" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(120 20 20)"/>
+      <circle cx="20" cy="20" r="3.5" fill="#EF9F27"/>
+      <circle cx="34" cy="20" r="2" fill="white"/>
+      <circle cx="13" cy="26" r="2" fill="white"/>
+    </svg>
+    <div>
+      <div class="nav-logo-text">BRILIO <span>Academy</span></div>
+    </div>
+  </a>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="container">
+
+    <!-- LEFT -->
+    <div class="panel-left">
+      <div class="panel-logo">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="28" cy="28" r="26" fill="rgba(255,255,255,0.15)"/>
+          <ellipse cx="28" cy="28" rx="20" ry="8" fill="none" stroke="#EF9F27" stroke-width="2"/>
+          <ellipse cx="28" cy="28" rx="20" ry="8" fill="none" stroke="#EF9F27" stroke-width="2" transform="rotate(60 28 28)"/>
+          <ellipse cx="28" cy="28" rx="20" ry="8" fill="none" stroke="#EF9F27" stroke-width="2" transform="rotate(120 28 28)"/>
+          <circle cx="28" cy="28" r="5" fill="#EF9F27"/>
+          <circle cx="48" cy="28" r="3" fill="white"/>
+          <circle cx="18" cy="35" r="3" fill="white"/>
+        </svg>
+        <h1>BRILIO</h1>
+        <p>Academy</p>
+      </div>
+
+      <div class="panel-features">
+        <h2 data-i18n="welcome">Rejoignez notre communauté d'apprenants</h2>
+        <div class="feature-item">
+          <div class="feature-icon">📚</div>
+          <div class="feature-text">
+            <strong data-i18n="feat1">Cours d'arabe en ligne</strong>
+            <span data-i18n="feat1sub">Programme d'été pour enfants</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔬</div>
+          <div class="feature-text">
+            <strong data-i18n="feat2">Maths · Physique · Chimie</strong>
+            <span data-i18n="feat2sub">Tous niveaux, toute l'année</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-text">
+            <strong data-i18n="feat3">Partout en Europe</strong>
+            <span data-i18n="feat3sub">France, Espagne, Italie et plus</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-langs">
+        <span class="lang-badge">🇫🇷 Français</span>
+        <span class="lang-badge">🇸🇦 العربية</span>
+        <span class="lang-badge">🇪🇸 Español</span>
+        <span class="lang-badge">🇬🇧 English</span>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="panel-right">
+      <div class="form-header">
+        <h2 data-i18n="create_account">Créer votre compte</h2>
+        <p><span data-i18n="already">Déjà inscrit ?</span> <a href="#" data-i18n="login">Se connecter</a></p>
+      </div>
+
+      <form id="registerForm" onsubmit="inscrireEleve(event)">
+
+        <!-- Photo -->
+        <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+          <div class="photo-preview" id="photoPreview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1A6BFF" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <img id="photoImg" src="" alt="photo">
+          </div>
+          <div class="photo-info">
+            <strong data-i18n="photo_title">Ajouter une photo de profil</strong>
+            <span data-i18n="photo_sub">JPG, PNG — max 5 MB</span>
+          </div>
+          <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="previewPhoto(this)">
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="nom">Nom <span class="required">*</span></label>
+            <input type="text" id="nom" placeholder="Ex: Ben Ali" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="prenom">Prénom <span class="required">*</span></label>
+            <input type="text" id="prenom" placeholder="Ex: Ahmed" required/>
+          </div>
+
+          <div class="form-group full">
+            <label for="dob">Date de naissance <span class="required">*</span></label>
+            <input type="date" id="dob" required/>
+          </div>
+
+          <div class="form-group full">
+            <label for="email">Adresse email <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="exemple@email.com" required oninput="validateEmail(this)"/>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe <span class="required">*</span></label>
+            <div class="password-wrapper">
+              <input type="password" id="password" placeholder="••••••••" required oninput="checkStrength(this.value)"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('password')">👁</button>
+            </div>
+            <div class="pw-strength">
+              <div class="pw-bar" id="bar1"></div>
+              <div class="pw-bar" id="bar2"></div>
+              <div class="pw-bar" id="bar3"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm">Confirmer <span class="required">*</span></label>
+            <div class="password-wrapper">
+              <input type="password" id="confirm" placeholder="••••••••" required oninput="checkMatch()"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('confirm')">👁</button>
+            </div>
+            <div class="input-hint" id="matchHint"></div>
+          </div>
+
+          <div class="form-group full">
+            <label>Pays de résidence</label>
+            <select id="pays">
+              <option value="">-- Sélectionner --</option>
+              <option>France</option>
+              <option>Espagne</option>
+              <option>Italie</option>
+              <option>Belgique</option>
+              <option>Suisse</option>
+              <option>Allemagne</option>
+              <option>Portugal</option>
+              <option>Pays-Bas</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <div class="checkbox-group">
+              <input type="checkbox" id="cgu" required/>
+              <label for="cgu" data-i18n="cgu">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a></label>
+            </div>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn-submit" data-i18n="submit">Créer mon compte →</button>
+
+        <div class="divider" data-i18n="or">ou</div>
+
+        <p style="text-align:center; font-size:13px; color:var(--text-muted)" data-i18n="secure">
+          🔒 Vos données sont sécurisées et ne seront jamais partagées
+        </p>
+
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon">✅</div>
+    <h3 data-i18n="success_title">Compte créé !</h3>
+    <p data-i18n="success_msg">Bienvenue dans la famille Brilio Academy 🎉<br>Vérifiez votre email pour activer votre compte.</p>
+    <button class="btn-modal" onclick="closeModal()" data-i18n="go_dashboard">Accéder à mon espace</button>
+  </div>
+</div>
+
+<script>
+// Traductions
+const i18n = {
+  fr: {
+    welcome: "Rejoignez notre communauté d'apprenants",
+    feat1: "Cours d'arabe en ligne", feat1sub: "Programme d'été pour enfants",
+    feat2: "Maths · Physique · Chimie", feat2sub: "Tous niveaux, toute l'année",
+    feat3: "Partout en Europe", feat3sub: "France, Espagne, Italie et plus",
+    create_account: "Créer votre compte",
+    already: "Déjà inscrit ?", login: "Se connecter",
+    photo_title: "Ajouter une photo de profil", photo_sub: "JPG, PNG — max 5 MB",
+    cgu: "J'accepte les conditions d'utilisation et la politique de confidentialité",
+    submit: "Créer mon compte →",
+    or: "ou",
+    secure: "🔒 Vos données sont sécurisées et ne seront jamais partagées",
+    success_title: "Compte créé !", success_msg: "Bienvenue dans la famille Brilio Academy 🎉\nVérifiez votre email pour activer votre compte.",
+    go_dashboard: "Accéder à mon espace"
+  },
+  ar: {
+    welcome: "انضم إلى مجتمع المتعلمين لدينا",
+    feat1: "دروس اللغة العربية عبر الإنترنت", feat1sub: "برنامج صيفي للأطفال",
+    feat2: "رياضيات · فيزياء · كيمياء", feat2sub: "جميع المستويات، طوال العام",
+    feat3: "في كل أنحاء أوروبا", feat3sub: "فرنسا، إسبانيا، إيطاليا والمزيد",
+    create_account: "إنشاء حسابك",
+    already: "لديك حساب؟", login: "تسجيل الدخول",
+    photo_title: "إضافة صورة الملف الشخصي", photo_sub: "JPG, PNG — 5 MB كحد أقصى",
+    cgu: "أوافق على شروط الاستخدام وسياسة الخصوصية",
+    submit: "إنشاء حسابي ←",
+    or: "أو",
+    secure: "🔒 بياناتك آمنة ولن تتم مشاركتها أبدًا",
+    success_title: "تم إنشاء الحساب!", success_msg: "مرحباً بك في عائلة Brilio Academy 🎉\nتحقق من بريدك الإلكتروني لتفعيل حسابك.",
+    go_dashboard: "الوصول إلى مساحتي"
+  },
+  es: {
+    welcome: "Únete a nuestra comunidad de aprendizaje",
+    feat1: "Clases de árabe en línea", feat1sub: "Programa de verano para niños",
+    feat2: "Matemáticas · Física · Química", feat2sub: "Todos los niveles, todo el año",
+    feat3: "En toda Europa", feat3sub: "Francia, España, Italia y más",
+    create_account: "Crear tu cuenta",
+    already: "¿Ya tienes cuenta?", login: "Iniciar sesión",
+    photo_title: "Agregar foto de perfil", photo_sub: "JPG, PNG — máx 5 MB",
+    cgu: "Acepto los términos de uso y la política de privacidad",
+    submit: "Crear mi cuenta →",
+    or: "o",
+    secure: "🔒 Tus datos están seguros y nunca serán compartidos",
+    success_title: "¡Cuenta creada!", success_msg: "Bienvenido a la familia Brilio Academy 🎉\nRevisa tu email para activar tu cuenta.",
+    go_dashboard: "Ir a mi espacio"
+  },
+  en: {
+    welcome: "Join our learning community",
+    feat1: "Online Arabic classes", feat1sub: "Summer program for children",
+    feat2: "Maths · Physics · Chemistry", feat2sub: "All levels, all year long",
+    feat3: "Across Europe", feat3sub: "France, Spain, Italy and more",
+    create_account: "Create your account",
+    already: "Already registered?", login: "Sign in",
+    photo_title: "Add a profile photo", photo_sub: "JPG, PNG — max 5 MB",
+    cgu: "I agree to the terms of use and privacy policy",
+    submit: "Create my account →",
+    or: "or",
+    secure: "🔒 Your data is secure and will never be shared",
+    success_title: "Account created!", success_msg: "Welcome to the Brilio Academy family 🎉\nCheck your email to activate your account.",
+    go_dashboard: "Go to my dashboard"
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+
+function previewPhoto(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('photoImg');
+      const svg = document.querySelector('#photoPreview svg');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      if (svg) svg.style.display = 'none';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function validateEmail(input) {
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+  input.className = input.value ? (valid ? 'success' : 'error') : '';
+}
+
+function togglePw(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function checkStrength(pw) {
+  const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+  bars.forEach(b => b.className = 'pw-bar');
+  if (!pw) return;
+  const strong = pw.length >= 8 && /[A-Z]/.test(pw) && /[0-9]/.test(pw);
+  const medium = pw.length >= 6;
+  if (strong) { bars.forEach(b => b.classList.add('strong')); }
+  else if (medium) { bars[0].classList.add('medium'); bars[1].classList.add('medium'); }
+  else { bars[0].classList.add('weak'); }
+}
+
+function checkMatch() {
+  const pw = document.getElementById('password').value;
+  const cf = document.getElementById('confirm').value;
+  const hint = document.getElementById('matchHint');
+  if (!cf) { hint.textContent = ''; return; }
+  if (pw === cf) { hint.textContent = '✓ Mots de passe identiques'; hint.style.color = 'var(--success)'; }
+  else { hint.textContent = '✗ Mots de passe différents'; hint.style.color = 'var(--error)'; }
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const pw = document.getElementById('password').value;
+  const cf = document.getElementById('confirm').value;
+  if (pw !== cf) { alert('Les mots de passe ne correspondent pas'); return; }
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+// Date max = aujourd'hui
+document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

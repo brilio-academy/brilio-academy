@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brilio Academy — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1A6BFF;--blue-light:#EBF1FF;--blue-dark:#0D3D99;
+  --gold:#EF9F27;--gold-light:#FEF6E7;
+  --green:#10B981;--green-light:#ECFDF5;
+  --purple:#8B5CF6;--purple-light:#EDE9FE;
+  --red:#EF4444;--red-light:#FEF2F2;
+  --orange:#F97316;--orange-light:#FFF7ED;
+  --text:#0D1526;--muted:#6B7A99;--border:#E2E8F4;
+  --bg:#F5F8FF;--white:#fff;--sidebar:240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);display:flex;min-height:100vh;}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0D1F5C,#1A6BFF);display:flex;align-items:center;justify-content:center;z-index:999;}
+.login-box{background:white;border-radius:20px;padding:2.5rem;width:360px;text-align:center;}
+.login-logo{font-family:'DM Serif Display',serif;font-size:28px;color:var(--blue-dark);letter-spacing:2px;margin-bottom:4px;}
+.login-sub{font-size:11px;font-weight:600;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem;}
+.login-title{font-size:16px;font-weight:600;margin-bottom:1.5rem;color:var(--muted);}
+.lf{margin-bottom:1rem;text-align:left;}
+.lf label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+.lf input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.lf input:focus{border-color:var(--blue);}
+.btn-login-submit{width:100%;padding:12px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:.5rem;transition:all .2s;}
+.btn-login-submit:hover{background:var(--blue-dark);}
+.login-err{color:var(--red);font-size:13px;margin-top:.5rem;display:none;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:linear-gradient(160deg,#0D1F5C 0%,#1A3A8F 100%);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto;}
+.sb-logo{padding:1.2rem;border-bottom:1px solid rgba(255,255,255,.1);}
+.sb-logo-row{display:flex;align-items:center;gap:10px;}
+.sb-logo svg{width:32px;height:32px;}
+.sb-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:white;letter-spacing:1.5px;}
+.sb-logo-sub{font-size:8px;font-weight:600;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.sb-admin-badge{margin:1rem 1.2rem;background:rgba(239,159,39,.2);border:1px solid rgba(239,159,39,.4);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.sb-admin-badge span{font-size:12px;font-weight:600;color:var(--gold);}
+.sb-nav{padding:.5rem 0;flex:1;}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.3);text-transform:uppercase;padding:0 1.2rem;margin:.8rem 0 .3rem;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 1.2rem;font-size:13px;font-weight:500;color:rgba(255,255,255,.65);cursor:pointer;transition:all .2s;border-left:3px solid transparent;text-decoration:none;}
+.sb-item:hover{color:white;background:rgba(255,255,255,.08);}
+.sb-item.active{color:white;background:rgba(255,255,255,.12);border-left-color:var(--gold);}
+.sb-item-icon{width:18px;text-align:center;font-size:15px;}
+.sb-badge{margin-left:auto;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.sb-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.1);}
+.sb-logout{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#FCA5A5;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.sb-logout:hover{background:rgba(239,68,68,.25);color:white;}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;}
+.topbar{background:white;border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 2rem;gap:1rem;position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:'DM Serif Display',serif;font-size:19px;flex:1;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.admin-pill{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--gold-light);border:1px solid rgba(239,159,39,.3);border-radius:20px;font-size:13px;font-weight:600;color:#92400E;}
+.content{padding:1.8rem;flex:1;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.card-title{font-size:15px;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.card-title-left{display:flex;align-items:center;gap:8px;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:white;border:1px solid var(--border);border-radius:14px;padding:1.3rem;display:flex;align-items:center;gap:12px;}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:26px;line-height:1;}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+.stat-trend{font-size:11px;font-weight:600;margin-top:4px;}
+.trend-up{color:var(--green);}
+.trend-down{color:var(--red);}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--blue);color:white;}
+.btn-primary:hover{background:var(--blue-dark);}
+.btn-success{background:var(--green);color:white;}
+.btn-success:hover{background:#059669;}
+.btn-danger{background:var(--red);color:white;}
+.btn-danger:hover{background:#DC2626;}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-gold{background:var(--gold);color:#0D1526;}
+.btn-gold:hover{background:#d48e1a;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg);}
+td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.tag-active{background:var(--green-light);color:#065F46;}
+.tag-pending{background:var(--gold-light);color:#92400E;}
+.tag-inactive{background:var(--red-light);color:#991B1B;}
+.tag-paid{background:var(--green-light);color:#065F46;}
+.tag-unpaid{background:var(--red-light);color:#991B1B;}
+.tag-arabic{background:#FEF3C7;color:#92400E;}
+.tag-math{background:#EEF2FF;color:#3730A3;}
+.tag-physics{background:#ECFDF5;color:#065F46;}
+.tag-chemistry{background:#F5F3FF;color:#5B21B6;}
+
+/* FORM FIELDS */
+.ff{margin-bottom:1rem;}
+.ff label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+.ff input,.ff textarea,.ff select{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;transition:all .2s;resize:vertical;}
+.ff input:focus,.ff textarea:focus,.ff select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,107,255,.1);}
+.ff-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.save-btn{padding:11px 24px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;}
+.save-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,21,38,.55);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;animation:fi .2s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal-box{background:white;border-radius:20px;padding:2rem;max-width:500px;width:90%;position:relative;animation:si .25s ease;max-height:85vh;overflow-y:auto;}
+@keyframes si{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:4px 8px;border-radius:8px;}
+.modal-close:hover{background:var(--bg);}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:1.2rem;}
+
+/* PRICE CARDS */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;}
+.price-card{border:1.5px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;transition:all .2s;position:relative;}
+.price-card:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(26,107,255,.1);}
+.price-icon{font-size:32px;margin-bottom:.8rem;}
+.price-name{font-size:14px;font-weight:600;margin-bottom:.5rem;}
+.price-amount{font-family:'DM Serif Display',serif;font-size:32px;color:var(--blue);margin-bottom:.3rem;}
+.price-period{font-size:12px;color:var(--muted);}
+.price-edit{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;}
+.price-edit:hover{border-color:var(--blue);background:var(--blue-light);}
+
+/* EXCHANGE */
+.ex-list{display:flex;flex-direction:column;gap:.8rem;}
+.ex-item{background:var(--bg);border-radius:12px;padding:1rem;border-left:4px solid var(--border);}
+.ex-item.urgent{border-left-color:var(--red);}
+.ex-item.normal{border-left-color:var(--blue);}
+.ex-item.answered{border-left-color:var(--green);}
+.ex-item-hd{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;}
+.ex-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;}
+.ex-name{font-size:13px;font-weight:600;}
+.ex-date{font-size:11px;color:var(--muted);margin-left:auto;}
+.ex-subject{font-size:12px;color:var(--muted);margin-bottom:.5rem;}
+.ex-msg{font-size:13px;line-height:1.5;margin-bottom:.8rem;}
+.ex-reply-box{background:white;border-radius:9px;padding:.8rem;border:1px solid var(--border);}
+.ex-reply-input{width:100%;border:none;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;resize:none;background:none;}
+.ex-reply-footer{display:flex;justify-content:flex-end;margin-top:.5rem;}
+
+/* COURSE ITEMS */
+.course-list{display:flex;flex-direction:column;gap:.8rem;}
+.course-item{background:var(--bg);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:12px;}
+.course-thumb{width:50px;height:50px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.course-info{flex:1;}
+.course-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+.course-meta{font-size:12px;color:var(--muted);}
+.course-actions{display:flex;gap:6px;}
+
+/* NEWS ITEMS */
+.news-list{display:flex;flex-direction:column;gap:.8rem;}
+.news-item{background:var(--bg);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:12px;}
+.news-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.news-info{flex:1;}
+.news-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+.news-meta{font-size:12px;color:var(--muted);}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#0D1526;color:white;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:500;display:none;align-items:center;gap:8px;z-index:500;box-shadow:0 8px 30px rgba(0,0,0,.3);}
+.toast.show{display:flex;animation:su .3s ease;}
+@keyframes su{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* PROGRESS */
+.prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px;}
+.prog-fill{height:100%;border-radius:3px;}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);}
+  .main{margin-left:0;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">BRILIO</div>
+    <div class="login-sub">Academy</div>
+    <div class="login-title">🔐 Espace Administrateur</div>
+    <div class="lf"><label>Email admin</label><input type="email" id="adminEmail" placeholder="admin@brilio-academy.com" value="admin@brilio-academy.com"/></div>
+    <div class="lf"><label>Mot de passe</label><input type="password" id="adminPw" placeholder="••••••••" value="admin123"/></div>
+    <div class="login-err" id="loginErr">❌ Email ou mot de passe incorrect</div>
+    <button class="btn-login-submit" onclick="doLogin()">Se connecter →</button>
+    <p style="font-size:11px;color:var(--muted);margin-top:1rem">Email: admin@brilio-academy.com · MDP: admin123</p>
+  </div>
+</div>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-row">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="18" fill="rgba(255,255,255,.15)"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(60 20 20)"/>
+        <ellipse cx="20" cy="20" rx="14" ry="5.5" fill="none" stroke="#EF9F27" stroke-width="1.5" transform="rotate(120 20 20)"/>
+        <circle cx="20" cy="20" r="3.5" fill="#EF9F27"/>
+        <circle cx="34" cy="20" r="2" fill="white"/>
+        <circle cx="13" cy="26" r="2" fill="white"/>
+      </svg>
+      <div><div class="sb-logo-name">BRILIO</div><div class="sb-logo-sub">Academy</div></div>
+    </div>
+  </div>
+  <div class="sb-admin-badge"><span>⚙️ Panneau Admin</span></div>
+
+  <nav class="sb-nav">
+    <div class="sb-section">Général</div>
+    <a class="sb-item active" onclick="showPage('dashboard',this)"><span class="sb-item-icon">📊</span> Tableau de bord</a>
+    <a class="sb-item" onclick="showPage('students',this)"><span class="sb-item-icon">👥</span> Élèves<span class="sb-badge" style="background:var(--blue)" id="studentCount">0</span></a>
+
+    <div class="sb-section">Contenu</div>
+    <a class="sb-item" onclick="showPage('courses',this)"><span class="sb-item-icon">🎬</span> Cours vidéo</a>
+    <a class="sb-item" onclick="showPage('exercises',this)"><span class="sb-item-icon">📝</span> Exercices</a>
+    <a class="sb-item" onclick="showPage('news',this)"><span class="sb-item-icon">📢</span> Actualités</a>
+
+    <div class="sb-section">Communication</div>
+    <a class="sb-item" onclick="showPage('exchange',this)"><span class="sb-item-icon">🙋</span> Demandes élèves<span class="sb-badge" style="background:var(--red)" id="exchangeCount">3</span></a>
+    <a class="sb-item" onclick="showPage('messages',this)"><span class="sb-item-icon">💬</span> Messages<span class="sb-badge" style="background:var(--red)">2</span></a>
+
+    <div class="sb-section">Paramètres</div>
+    <a class="sb-item" onclick="showPage('pricing',this)"><span class="sb-item-icon">💰</span> Tarifs & Paiements</a>
+    <a class="sb-item" onclick="showPage('site',this)"><span class="sb-item-icon">🌐</span> Contenu du site</a>
+    <a class="sb-item" onclick="showPage('settings',this)"><span class="sb-item-icon">⚙️</span> Paramètres</a>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="sb-logout" onclick="doLogout()"><span>🚪</span> Se déconnecter</div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Tableau de bord</div>
+    <div class="topbar-right">
+      <div class="admin-pill">👑 Administrateur</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon" style="background:var(--blue-light)">👥</div><div><div class="stat-num" id="ds-students">12</div><div class="stat-lbl">Élèves inscrits</div><div class="stat-trend trend-up">↑ +3 ce mois</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--gold-light)">💰</div><div><div class="stat-num">480€</div><div class="stat-lbl">Revenus ce mois</div><div class="stat-trend trend-up">↑ +120€</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--green-light)">🎬</div><div><div class="stat-num">18</div><div class="stat-lbl">Cours publiés</div><div class="stat-trend trend-up">↑ +4</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--red-light)">🙋</div><div><div class="stat-num">3</div><div class="stat-lbl">Demandes en attente</div><div class="stat-trend trend-down">⚠️ À traiter</div></div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">👥 Derniers élèves inscrits</div><button class="btn btn-outline btn-sm" onclick="showPage('students',null)">Voir tous</button></div>
+          <div class="table-wrap">
+            <table>
+              <tr><th>Élève</th><th>Matières</th><th>Statut</th><th>Date</th></tr>
+              <tr><td><strong>Ahmed Ben Ali</strong></td><td><span class="tag tag-arabic">Arabe</span> <span class="tag tag-math">Maths</span></td><td><span class="tag tag-active">Actif</span></td><td>01 Avr</td></tr>
+              <tr><td><strong>Sara Khalil</strong></td><td><span class="tag tag-physics">Physique</span></td><td><span class="tag tag-active">Actif</span></td><td>28 Mar</td></tr>
+              <tr><td><strong>Youssef Amrani</strong></td><td><span class="tag tag-arabic">Arabe</span></td><td><span class="tag tag-pending">En attente</span></td><td>25 Mar</td></tr>
+              <tr><td><strong>Lina Bouaziz</strong></td><td><span class="tag tag-math">Maths</span> <span class="tag tag-chemistry">Chimie</span></td><td><span class="tag tag-active">Actif</span></td><td>20 Mar</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">🙋 Demandes en attente</div><button class="btn btn-outline btn-sm" onclick="showPage('exchange',null)">Voir toutes</button></div>
+          <div class="ex-list">
+            <div class="ex-item urgent">
+              <div class="ex-item-hd"><div class="ex-avatar">YA</div><div class="ex-name">Youssef</div><span class="tag tag-inactive btn-sm">🔴 Urgent</span><div class="ex-date">02 Avr</div></div>
+              <div class="ex-subject">➗ Maths — Fonctions dérivées</div>
+              <div class="ex-msg" style="font-size:12px">Je bloque sur la dérivée des fonctions composées...</div>
+              <button class="btn btn-primary btn-sm" onclick="showPage('exchange',null)">Répondre →</button>
+            </div>
+            <div class="ex-item normal">
+              <div class="ex-item-hd"><div class="ex-avatar" style="background:var(--green)">LB</div><div class="ex-name">Lina</div><span class="tag tag-pending btn-sm">⏳ Normal</span><div class="ex-date">01 Avr</div></div>
+              <div class="ex-subject">🧪 Chimie — Équilibrage</div>
+              <div class="ex-msg" style="font-size:12px">Comment équilibrer les équations chimiques ?</div>
+              <button class="btn btn-primary btn-sm" onclick="showPage('exchange',null)">Répondre →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">📈 Élèves par matière</div></div>
+          <div id="subjectStats"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">💰 Paiements récents</div></div>
+          <div class="table-wrap">
+            <table>
+              <tr><th>Élève</th><th>Montant</th><th>Statut</th></tr>
+              <tr><td>Ahmed Ben Ali</td><td><strong>60€</strong></td><td><span class="tag tag-paid">Payé</span></td></tr>
+              <tr><td>Sara Khalil</td><td><strong>25€</strong></td><td><span class="tag tag-paid">Payé</span></td></tr>
+              <tr><td>Youssef Amrani</td><td><strong>20€</strong></td><td><span class="tag tag-unpaid">En attente</span></td></tr>
+              <tr><td>Lina Bouaziz</td><td><strong>50€</strong></td><td><span class="tag tag-paid">Payé</span></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ÉLÈVES ════ -->
+    <div class="page" id="page-students">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:22px">👥 Gestion des élèves</h2>
+        <button class="btn btn-primary" onclick="openModal('addStudentModal')">+ Ajouter un élève</button>
+      </div>
+      <div class="card">
+        <div style="display:flex;gap:10px;margin-bottom:1rem">
+          <input type="text" placeholder="🔍 Rechercher un élève..." style="flex:1;padding:9px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;" oninput="filterStudents(this.value)"/>
+          <select style="padding:9px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;" onchange="filterStudents(null,this.value)">
+            <option value="">Toutes les matières</option>
+            <option value="arabic">Arabe</option>
+            <option value="math">Maths</option>
+            <option value="physics">Physique</option>
+            <option value="chemistry">Chimie</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="studentsTable">
+            <tr><th>Nom</th><th>Email</th><th>Pays</th><th>Niveau</th><th>Matières</th><th>Paiement</th><th>Statut</th><th>Actions</th></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ COURS ════ -->
+    <div class="page" id="page-courses">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:22px">🎬 Cours vidéo</h2>
+        <button class="btn btn-primary" onclick="openModal('addCourseModal')">+ Ajouter un cours</button>
+      </div>
+      <div class="card">
+        <div class="course-list" id="courseList"></div>
+      </div>
+    </div>
+
+    <!-- ════ EXERCICES ════ -->
+    <div class="page" id="page-exercises">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:22px">📝 Exercices</h2>
+        <button class="btn btn-primary" onclick="openModal('addExModal')">+ Ajouter un exercice</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table id="exTable">
+            <tr><th>Titre</th><th>Matière</th><th>Niveau</th><th>Date limite</th><th>Rendus</th><th>Actions</th></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ACTUALITÉS ════ -->
+    <div class="page" id="page-news">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:22px">📢 Actualités & Annonces</h2>
+        <button class="btn btn-primary" onclick="openModal('addNewsModal')">+ Publier une actualité</button>
+      </div>
+      <div class="card">
+        <div class="news-list" id="newsList"></div>
+      </div>
+    </div>
+
+    <!-- ════ ÉCHANGE ════ -->
+    <div class="page" id="page-exchange">
+      <div style="margin-bottom:1.5rem">
+        <h2 style="font-family:'DM Serif Display',serif;font-size:22px">🙋 Demandes des élèves</h2>
+        <p style="font-size:14px;color:var(--muted);margin-top:4px">Répondez aux élèves qui n'ont pas compris un cours</p>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="card" style="border-left:4px solid var(--red)">
+            <div class="card-title"><div class="card-title-left">🔴 Très urgent</div></div>
+            <div class="ex-item urgent" style="background:white;border:none;padding:0">
+              <div class="ex-item-hd"><div class="ex-avatar">YA</div><div><div class="ex-name">Youssef Amrani</div><div style="font-size:11px;color:var(--muted)">Lycée · 2nde · France</div></div><div class="ex-date">02 Avr 2025</div></div>
+              <div class="ex-subject" style="margin-top:.5rem">➗ Maths — Fonctions dérivées</div>
+              <div class="ex-msg">Je bloque sur la dérivée des fonctions composées. J'ai un exercice à rendre demain et je ne comprends pas la règle de la chaîne.</div>
+              <div class="ex-reply-box">
+                <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:.5rem">✏️ Ta réponse :</div>
+                <textarea class="ex-reply-input" rows="4" placeholder="Écris ta réponse ici pour Youssef..." id="reply1"></textarea>
+                <div class="ex-reply-footer"><button class="btn btn-primary btn-sm" onclick="sendReply('reply1','YA')">Envoyer la réponse ✓</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="border-left:4px solid var(--gold)">
+            <div class="card-title"><div class="card-title-left">🟡 En attente</div></div>
+            <div class="ex-item" style="background:white;border:none;padding:0">
+              <div class="ex-item-hd"><div class="ex-avatar" style="background:var(--green)">LB</div><div><div class="ex-name">Lina Bouaziz</div><div style="font-size:11px;color:var(--muted)">Lycée · 1ère · Espagne</div></div><div class="ex-date">01 Avr 2025</div></div>
+              <div class="ex-subject" style="margin-top:.5rem">🧪 Chimie — Équilibrage des équations</div>
+              <div class="ex-msg">Je ne comprends pas comment équilibrer les équations chimiques. La méthode par tâtonnement ne marche pas pour moi.</div>
+              <div class="ex-reply-box">
+                <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:.5rem">✏️ Ta réponse :</div>
+                <textarea class="ex-reply-input" rows="4" placeholder="Écris ta réponse ici pour Lina..." id="reply2"></textarea>
+                <div class="ex-reply-footer"><button class="btn btn-primary btn-sm" onclick="sendReply('reply2','LB')">Envoyer la réponse ✓</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="border-left:4px solid var(--green)">
+            <div class="card-title"><div class="card-title-left">✅ Répondu récemment</div></div>
+            <div class="ex-item answered" style="background:white;border:none;padding:0;margin-bottom:1rem">
+              <div class="ex-item-hd"><div class="ex-avatar" style="background:var(--gold)">AH</div><div><div class="ex-name">Ahmed Ben Ali</div></div><div class="ex-date">28 Mar</div></div>
+              <div class="ex-subject" style="margin-top:.5rem">📖 Arabe — Conjugaison</div>
+              <div class="ex-msg" style="font-size:12px">Je ne comprends pas la différence passé/présent en arabe.</div>
+              <div style="background:var(--green-light);border-radius:8px;padding:.7rem;font-size:12px;margin-top:.5rem">
+                <strong style="color:var(--green)">✅ Réponse envoyée :</strong> Le passé (الماضي) utilise des suffixes, le présent (المضارع) des préfixes...
+              </div>
+            </div>
+            <div class="ex-item answered" style="background:white;border:none;padding:0">
+              <div class="ex-item-hd"><div class="ex-avatar" style="background:var(--purple)">SK</div><div><div class="ex-name">Sara Khalil</div></div><div class="ex-date">25 Mar</div></div>
+              <div class="ex-subject" style="margin-top:.5rem">⚡ Physique — Lois de Newton</div>
+              <div class="ex-msg" style="font-size:12px">Comment appliquer F=ma avec plusieurs forces ?</div>
+              <div style="background:var(--green-light);border-radius:8px;padding:.7rem;font-size:12px;margin-top:.5rem">
+                <strong style="color:var(--green)">✅ Réponse envoyée :</strong> Il faut faire la somme vectorielle de toutes les forces...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ MESSAGES ════ -->
+    <div class="page" id="page-messages">
+      <div style="margin-bottom:1.5rem"><h2 style="font-family:'DM Serif Display',serif;font-size:22px">💬 Messages avec les élèves</h2></div>
+      <div style="background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;height:520px;display:grid;grid-template-columns:240px 1fr;">
+        <div style="border-right:1px solid var(--border);overflow-y:auto;">
+          <div style="padding:.9rem;border-bottom:1px solid var(--border);font-size:14px;font-weight:600">Conversations</div>
+          <div id="msgList"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="padding:.9rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0D1526" id="msgChatAv">AH</div>
+            <div><div style="font-size:14px;font-weight:600" id="msgChatName">Ahmed Ben Ali</div><div style="font-size:11px;color:var(--green)">● En ligne</div></div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem" id="adminMsgBody">
+            <div style="max-width:65%;padding:9px 13px;border-radius:4px 14px 14px 14px;background:var(--bg);font-size:13px;align-self:flex-start">Bonjour Prof. ! J'ai du mal avec l'expression orale en arabe.<div style="font-size:10px;opacity:.6;margin-top:3px">09h45</div></div>
+            <div style="max-width:65%;padding:9px 13px;border-radius:14px 4px 14px 14px;background:var(--blue);color:white;font-size:13px;align-self:flex-end">Bonjour Ahmed ! Je te conseille d'écouter des podcasts en arabe chaque jour.<div style="font-size:10px;opacity:.6;margin-top:3px;text-align:right">10h00</div></div>
+          </div>
+          <div style="padding:.9rem;border-top:1px solid var(--border);display:flex;gap:8px">
+            <textarea style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:none;" rows="2" placeholder="Écrire un message..." id="adminMsgInput"></textarea>
+            <button style="width:40px;height:40px;border-radius:9px;background:var(--blue);border:none;color:white;cursor:pointer;font-size:17px;align-self:flex-end" onclick="sendAdminMsg()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ TARIFS ════ -->
+    <div class="page" id="page-pricing">
+      <div style="margin-bottom:1.5rem"><h2 style="font-family:'DM Serif Display',serif;font-size:22px">💰 Tarifs & Paiements</h2></div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-left">💳 Prix par matière (mensuel)</div></div>
+        <div class="price-grid" id="priceGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-left">📊 Suivi des paiements</div><button class="btn btn-outline btn-sm">Exporter CSV</button></div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Élève</th><th>Matières</th><th>Montant/mois</th><th>Dernier paiement</th><th>Prochain</th><th>Statut</th><th>Action</th></tr>
+            <tr><td><strong>Ahmed Ben Ali</strong></td><td>Arabe + Maths + Physique</td><td><strong id="totalAhmed">—</strong></td><td>01 Avr 2025</td><td>01 Mai 2025</td><td><span class="tag tag-paid">Payé</span></td><td><button class="btn btn-outline btn-sm">Relancer</button></td></tr>
+            <tr><td><strong>Sara Khalil</strong></td><td>Physique</td><td><strong id="totalSara">—</strong></td><td>28 Mar 2025</td><td>28 Avr 2025</td><td><span class="tag tag-paid">Payé</span></td><td><button class="btn btn-outline btn-sm">Relancer</button></td></tr>
+            <tr><td><strong>Youssef Amrani</strong></td><td>Arabe</td><td><strong id="totalYoussef">—</strong></td><td>—</td><td>—</td><td><span class="tag tag-unpaid">Non payé</span></td><td><button class="btn btn-danger btn-sm">Relancer</button></td></tr>
+            <tr><td><strong>Lina Bouaziz</strong></td><td>Maths + Chimie</td><td><strong id="totalLina">—</strong></td><td>20 Mar 2025</td><td>20 Avr 2025</td><td><span class="tag tag-paid">Payé</span></td><td><button class="btn btn-outline btn-sm">Relancer</button></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CONTENU SITE ════ -->
+    <div class="page" id="page-site">
+      <div style="margin-bottom:1.5rem"><h2 style="font-family:'DM Serif Display',serif;font-size:22px">🌐 Modifier le contenu du site</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">🏢 Informations de l'entreprise</div></div>
+          <div class="ff"><label>Nom de l'école</label><input type="text" value="Brilio Academy"/></div>
+          <div class="ff"><label>Description courte</label><textarea rows="3">L'école en ligne pour apprendre l'arabe et exceller en sciences, partout en Europe.</textarea></div>
+          <div class="ff"><label>Description complète (À propos)</label><textarea rows="5">Brilio Academy est une école en ligne créée pour répondre aux besoins des familles arabes et étrangères vivant en Europe. Nous croyons que chaque enfant mérite un accès à une éducation de qualité.</textarea></div>
+          <div class="ff"><label>Slogan</label><input type="text" value="Apprendre l'arabe & exceller en sciences, partout en Europe"/></div>
+          <button class="save-btn" onclick="showToast('✅ Informations sauvegardées !')">Sauvegarder</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">📞 Coordonnées de contact</div></div>
+          <div class="ff"><label>Email de contact</label><input type="email" placeholder="contact@brilio-academy.com"/></div>
+          <div class="ff"><label>Téléphone / WhatsApp</label><input type="tel" placeholder="+33 6 XX XX XX XX"/></div>
+          <div class="ff"><label>Adresse (optionnel)</label><input type="text" placeholder="Ville, Pays"/></div>
+          <div class="ff"><label>Lien Facebook</label><input type="url" placeholder="https://facebook.com/..."/></div>
+          <div class="ff"><label>Lien Instagram</label><input type="url" placeholder="https://instagram.com/..."/></div>
+          <div class="ff"><label>Lien WhatsApp</label><input type="url" placeholder="https://wa.me/..."/></div>
+          <div class="ff"><label>Lien YouTube</label><input type="url" placeholder="https://youtube.com/..."/></div>
+          <button class="save-btn" onclick="showToast('✅ Coordonnées sauvegardées !')">Sauvegarder</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">🎬 Vidéo de présentation</div></div>
+          <div class="ff"><label>Lien YouTube ou Vimeo</label><input type="url" id="videoUrl" placeholder="https://www.youtube.com/embed/..."/></div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:1rem">💡 Sur YouTube : clique sur "Partager" → "Intégrer" et copie le lien src="..."</p>
+          <button class="save-btn" onclick="showToast('✅ Vidéo mise à jour !')">Sauvegarder</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">🕐 Horaires de disponibilité</div></div>
+          <div class="ff-row">
+            <div class="ff"><label>Jours</label><input type="text" value="Lundi — Samedi"/></div>
+            <div class="ff"><label>Horaires</label><input type="text" value="9h00 — 20h00"/></div>
+          </div>
+          <div class="ff"><label>Zones géographiques</label><input type="text" value="France · Espagne · Italie · Europe"/></div>
+          <div class="ff"><label>Langues parlées</label><input type="text" value="Français · Arabe · Espagnol · Anglais"/></div>
+          <button class="save-btn" onclick="showToast('✅ Horaires sauvegardés !')">Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PARAMÈTRES ════ -->
+    <div class="page" id="page-settings">
+      <div style="margin-bottom:1.5rem"><h2 style="font-family:'DM Serif Display',serif;font-size:22px">⚙️ Paramètres</h2></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">🔐 Changer le mot de passe admin</div></div>
+          <div class="ff"><label>Mot de passe actuel</label><input type="password" placeholder="••••••••"/></div>
+          <div class="ff"><label>Nouveau mot de passe</label><input type="password" placeholder="••••••••"/></div>
+          <div class="ff"><label>Confirmer</label><input type="password" placeholder="••••••••"/></div>
+          <button class="save-btn" onclick="showToast('✅ Mot de passe changé !')">Changer le mot de passe</button>
+        </div>
+        <div class="card">
+          <div class="card-title"><div class="card-title-left">📧 Email administrateur</div></div>
+          <div class="ff"><label>Email actuel</label><input type="email" value="admin@brilio-academy.com"/></div>
+          <div class="ff"><label>Nouvel email</label><input type="email" placeholder="nouvel@email.com"/></div>
+          <button class="save-btn" onclick="showToast('✅ Email mis à jour !')">Mettre à jour</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ══ MODALS ══ -->
+
+<!-- ADD COURSE -->
+<div class="modal-overlay" id="addCourseModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('addCourseModal')">✕</button>
+    <div class="modal-title">🎬 Ajouter un cours vidéo</div>
+    <div class="ff"><label>Titre du cours <span style="color:var(--blue)">*</span></label><input type="text" id="cTitle" placeholder="Ex: Les équations du 2e degré"/></div>
+    <div class="ff-row">
+      <div class="ff"><label>Matière</label>
+        <select id="cSubject"><option value="arabic">📖 Arabe</option><option value="math">➗ Maths</option><option value="physics">⚡ Physique</option><option value="chemistry">🧪 Chimie</option><option value="french">🇫🇷 Français</option><option value="english">🇬🇧 Anglais</option></select>
+      </div>
+      <div class="ff"><label>Niveau</label>
+        <select id="cLevel"><option>Primaire</option><option>Collège</option><option selected>Lycée</option><option>Université</option></select>
+      </div>
+    </div>
+    <div class="ff"><label>Lien vidéo YouTube / Vimeo <span style="color:var(--blue)">*</span></label><input type="url" id="cUrl" placeholder="https://www.youtube.com/embed/..."/></div>
+    <div class="ff"><label>Description</label><textarea id="cDesc" rows="3" placeholder="Décris le contenu du cours..."></textarea></div>
+    <div class="ff-row">
+      <div class="ff"><label>Durée</label><input type="text" id="cDur" placeholder="Ex: 45 min"/></div>
+      <div class="ff"><label>Date</label><input type="date" id="cDate"/></div>
+    </div>
+    <button class="save-btn" style="width:100%" onclick="addCourse()">Publier le cours 🚀</button>
+  </div>
+</div>
+
+<!-- ADD EXERCISE -->
+<div class="modal-overlay" id="addExModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('addExModal')">✕</button>
+    <div class="modal-title">📝 Ajouter un exercice</div>
+    <div class="ff"><label>Titre <span style="color:var(--blue)">*</span></label><input type="text" id="exTitle" placeholder="Ex: Exercice sur les équations"/></div>
+    <div class="ff-row">
+      <div class="ff"><label>Matière</label>
+        <select id="exSubject"><option value="arabic">📖 Arabe</option><option value="math">➗ Maths</option><option value="physics">⚡ Physique</option><option value="chemistry">🧪 Chimie</option></select>
+      </div>
+      <div class="ff"><label>Niveau</label>
+        <select id="exLevel"><option>Primaire</option><option>Collège</option><option selected>Lycée</option></select>
+      </div>
+    </div>
+    <div class="ff"><label>Description</label><textarea id="exDesc" rows="3" placeholder="Décris l'exercice..."></textarea></div>
+    <div class="ff"><label>Date limite de rendu</label><input type="date" id="exDue"/></div>
+    <button class="save-btn" style="width:100%" onclick="addExercise()">Publier l'exercice 🚀</button>
+  </div>
+</div>
+
+<!-- ADD NEWS -->
+<div class="modal-overlay" id="addNewsModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('addNewsModal')">✕</button>
+    <div class="modal-title">📢 Publier une actualité</div>
+    <div class="ff"><label>Titre <span style="color:var(--blue)">*</span></label><input type="text" id="newsTitle" placeholder="Ex: Ouverture des inscriptions été 2025"/></div>
+    <div class="ff-row">
+      <div class="ff"><label>Catégorie</label>
+        <select id="newsCat"><option value="arabic">📖 Arabe</option><option value="sciences">🔬 Sciences</option><option value="event">🎉 Événement</option><option value="general">📢 Général</option></select>
+      </div>
+      <div class="ff"><label>Emoji</label><input type="text" id="newsEmoji" placeholder="📢" maxlength="2" value="📢"/></div>
+    </div>
+    <div class="ff"><label>Contenu <span style="color:var(--blue)">*</span></label><textarea id="newsContent" rows="4" placeholder="Écris le contenu de l'actualité..."></textarea></div>
+    <button class="save-btn" style="width:100%" onclick="addNews()">Publier 🚀</button>
+  </div>
+</div>
+
+<!-- ADD STUDENT -->
+<div class="modal-overlay" id="addStudentModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('addStudentModal')">✕</button>
+    <div class="modal-title">👤 Ajouter un élève</div>
+    <div class="ff-row">
+      <div class="ff"><label>Nom</label><input type="text" id="sNom" placeholder="Ben Ali"/></div>
+      <div class="ff"><label>Prénom</label><input type="text" id="sPre" placeholder="Ahmed"/></div>
+    </div>
+    <div class="ff"><label>Email</label><input type="email" id="sEmail" placeholder="ahmed@email.com"/></div>
+    <div class="ff-row">
+      <div class="ff"><label>Pays</label><select id="sPays"><option>France</option><option>Espagne</option><option>Italie</option><option>Belgique</option><option>Autre</option></select></div>
+      <div class="ff"><label>Niveau</label><select id="sLevel"><option>Primaire</option><option>Collège</option><option selected>Lycée</option><option>Université</option></select></div>
+    </div>
+    <div class="ff"><label>Matières inscrites</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="arabic"> 📖 Arabe</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="math"> ➗ Maths</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="physics"> ⚡ Physique</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="chemistry"> 🧪 Chimie</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="french"> 🇫🇷 Français</label>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:13px"><input type="checkbox" value="english"> 🇬🇧 Anglais</label>
+      </div>
+    </div>
+    <button class="save-btn" style="width:100%" onclick="addStudent()">Ajouter l'élève ✓</button>
+  </div>
+</div>
+
+<!-- EDIT PRICE -->
+<div class="modal-overlay" id="editPriceModal">
+  <div class="modal-box" style="max-width:360px">
+    <button class="modal-close" onclick="closeModal('editPriceModal')">✕</button>
+    <div class="modal-title">✏️ Modifier le tarif</div>
+    <div class="ff"><label id="editPriceLabel">Matière</label><input type="text" id="editPriceName" readonly style="background:var(--bg)"/></div>
+    <div class="ff"><label>Prix mensuel (€) <span style="color:var(--blue)">*</span></label><input type="number" id="editPriceValue" placeholder="25" min="1" max="999"/></div>
+    <div class="ff"><label>Description courte</label><input type="text" id="editPriceDesc" placeholder="Ex: 2 cours par semaine"/></div>
+    <button class="save-btn" style="width:100%" onclick="savePriceEdit()">Sauvegarder le tarif ✓</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+// ══ DATA ══
+let prices = [
+  {id:'arabic',   name:'📖 Arabe',          price:20, desc:'Programme d\'été intensif', color:'var(--gold)'},
+  {id:'math',     name:'➗ Mathématiques',   price:25, desc:'Cours particuliers visio',  color:'var(--blue)'},
+  {id:'physics',  name:'⚡ Physique',        price:25, desc:'Cours particuliers visio',  color:'var(--green)'},
+  {id:'chemistry',name:'🧪 Chimie',          price:25, desc:'Cours particuliers visio',  color:'var(--purple)'},
+  {id:'french',   name:'🇫🇷 Français',      price:20, desc:'Cours particuliers visio',  color:'var(--red)'},
+  {id:'english',  name:'🇬🇧 Anglais',       price:20, desc:'Cours particuliers visio',  color:'var(--blue-dark)'},
+];
+
+let editingPriceId = null;
+
+let students = [
+  {nom:'Ben Ali',pre:'Ahmed',email:'ahmed@email.com',pays:'France',level:'Lycée',subs:['arabic','math','physics'],paid:true},
+  {nom:'Khalil',pre:'Sara',email:'sara@email.com',pays:'Espagne',level:'Lycée',subs:['physics'],paid:true},
+  {nom:'Amrani',pre:'Youssef',email:'youssef@email.com',pays:'France',level:'Collège',subs:['arabic'],paid:false},
+  {nom:'Bouaziz',pre:'Lina',email:'lina@email.com',pays:'Italie',level:'Lycée',subs:['math','chemistry'],paid:true},
+];
+
+let courses = [
+  {title:"Introduction à l'alphabet arabe",sub:'arabic',level:'Primaire',dur:'45 min',date:'15 Mar',url:''},
+  {title:"Équations du 2e degré",sub:'math',level:'Lycée',dur:'60 min',date:'18 Mar',url:''},
+  {title:"Les lois de Newton",sub:'physics',level:'Lycée',dur:'50 min',date:'10 Mar',url:''},
+  {title:"Structure de l'atome",sub:'chemistry',level:'Lycée',dur:'45 min',date:'12 Mar',url:''},
+];
+
+let exercises = [
+  {title:"Grammaire arabe — Leçon 3",sub:'arabic',level:'Lycée',due:'05 Avr',rendus:8},
+  {title:"Équations du 2e degré",sub:'math',level:'Lycée',due:'07 Avr',rendus:3},
+  {title:"Lois de Newton",sub:'physics',level:'Lycée',due:'08 Avr',rendus:5},
+];
+
+let news = [
+  {title:"Ouverture des inscriptions — Été 2025",cat:'arabic',emoji:'📢',content:"Les inscriptions pour le programme intensif d'arabe sont ouvertes.",date:'01 Avr 2025'},
+  {title:"Nouveau : Cours de chimie lycée",cat:'sciences',emoji:'🔬',content:"Brilio lance ses cours de chimie pour lycéens. Premier cours gratuit !",date:'20 Mar 2025'},
+  {title:"Portes ouvertes virtuelles",cat:'event',emoji:'🎉',content:"Participez à notre journée portes ouvertes en ligne.",date:'15 Mar 2025'},
+];
+
+const subMap={arabic:'📖 Arabe',math:'➗ Maths',physics:'⚡ Physique',chemistry:'🧪 Chimie',french:'🇫🇷 Français',english:'🇬🇧 Anglais'};
+const tagClass={arabic:'tag-arabic',math:'tag-math',physics:'tag-physics',chemistry:'tag-chemistry',french:'tag-inactive',english:'tag-pending'};
+
+// ══ LOGIN ══
+function doLogin(){
+  const email=document.getElementById('adminEmail').value;
+  const pw=document.getElementById('adminPw').value;
+  if(email==='admin@brilio-academy.com'&&pw==='admin123'){
+    document.getElementById('loginScreen').style.display='none';
+    initAll();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+document.getElementById('adminPw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+function doLogout(){document.getElementById('loginScreen').style.display='flex';}
+
+// ══ INIT ══
+function initAll(){
+  renderStudents();
+  renderCourses();
+  renderExercises();
+  renderNews();
+  renderPrices();
+  renderMsgList();
+  renderSubjectStats();
+  updateTotals();
+  document.getElementById('studentCount').textContent=students.length;
+  document.getElementById('ds-students').textContent=students.length;
+  document.getElementById('cDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('exDue').value=new Date().toISOString().split('T')[0];
+}
+
+// ══ PAGE NAV ══
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el){document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+  const titles={dashboard:'Tableau de bord',students:'Gestion des élèves',courses:'Cours vidéo',exercises:'Exercices',news:'Actualités',exchange:'Demandes des élèves',messages:'Messages',pricing:'Tarifs & Paiements',site:'Contenu du site',settings:'Paramètres'};
+  document.getElementById('pageTitle').textContent=titles[id]||'';
+}
+
+// ══ STUDENTS ══
+function renderStudents(list){
+  const data=list||students;
+  const tb=document.getElementById('studentsTable');
+  const rows=data.map((s,i)=>`
+    <tr>
+      <td><strong>${s.pre} ${s.nom}</strong></td>
+      <td>${s.email}</td>
+      <td>${s.pays}</td>
+      <td>${s.level}</td>
+      <td>${s.subs.map(sub=>`<span class="tag ${tagClass[sub]||''}">${subMap[sub]||sub}</span>`).join(' ')}</td>
+      <td><strong>${calcTotal(s.subs)}€</strong>/mois</td>
+      <td><span class="tag ${s.paid?'tag-active':'tag-unpaid'}">${s.paid?'Payé':'Non payé'}</span></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="togglePaid(${i})">💳</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${i})">🗑</button>
+      </td>
+    </tr>`).join('');
+  tb.innerHTML=`<tr><th>Nom</th><th>Email</th><th>Pays</th><th>Niveau</th><th>Matières</th><th>Montant</th><th>Paiement</th><th>Actions</th></tr>${rows}`;
+}
+
+function filterStudents(search,sub){
+  let list=students;
+  if(search)list=list.filter(s=>(s.pre+' '+s.nom+s.email).toLowerCase().includes(search.toLowerCase()));
+  if(sub)list=list.filter(s=>s.subs.includes(sub));
+  renderStudents(list);
+}
+
+function togglePaid(i){
+  students[i].paid=!students[i].paid;
+  renderStudents();
+  showToast(students[i].paid?'✅ Paiement validé !':'⚠️ Paiement annulé');
+}
+
+function deleteStudent(i){
+  if(!confirm(`Supprimer ${students[i].pre} ${students[i].nom} ?`))return;
+  students.splice(i,1);
+  renderStudents();
+  document.getElementById('studentCount').textContent=students.length;
+  document.getElementById('ds-students').textContent=students.length;
+  showToast('🗑 Élève supprimé');
+}
+
+function addStudent(){
+  const nom=document.getElementById('sNom').value;
+  const pre=document.getElementById('sPre').value;
+  const email=document.getElementById('sEmail').value;
+  if(!nom||!pre||!email){showToast('⚠️ Remplis les champs obligatoires');return;}
+  const subs=[...document.querySelectorAll('#addStudentModal input[type=checkbox]:checked')].map(c=>c.value);
+  students.push({nom,pre,email,pays:document.getElementById('sPays').value,level:document.getElementById('sLevel').value,subs,paid:false});
+  renderStudents();
+  document.getElementById('studentCount').textContent=students.length;
+  document.getElementById('ds-students').textContent=students.length;
+  closeModal('addStudentModal');
+  showToast('✅ Élève ajouté !');
+}
+
+// ══ COURSES ══
+function renderCourses(){
+  const thumbBg={arabic:'linear-gradient(135deg,#FEF3C7,#FDE68A)',math:'linear-gradient(135deg,#EEF2FF,#C7D2FE)',physics:'linear-gradient(135deg,#ECFDF5,#A7F3D0)',chemistry:'linear-gradient(135deg,#F5F3FF,#DDD6FE)',french:'linear-gradient(135deg,#FEE2E2,#FECACA)',english:'linear-gradient(135deg,#DBEAFE,#BFDBFE)'};
+  const emoji={arabic:'📖',math:'➗',physics:'⚡',chemistry:'🧪',french:'🇫🇷',english:'🇬🇧'};
+  document.getElementById('courseList').innerHTML=courses.map((c,i)=>`
+    <div class="course-item">
+      <div class="course-thumb" style="background:${thumbBg[c.sub]||'var(--bg)'}">${emoji[c.sub]||'📚'}</div>
+      <div class="course-info">
+        <div class="course-title">${c.title}</div>
+        <div class="course-meta">${subMap[c.sub]||c.sub} · ${c.level} · ⏱ ${c.dur} · 📅 ${c.date}</div>
+      </div>
+      <div class="course-actions">
+        <button class="btn btn-outline btn-sm">✏️ Modifier</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCourse(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteCourse(i){courses.splice(i,1);renderCourses();showToast('🗑 Cours supprimé');}
+
+function addCourse(){
+  const title=document.getElementById('cTitle').value;
+  const url=document.getElementById('cUrl').value;
+  if(!title||!url){showToast('⚠️ Titre et lien vidéo obligatoires');return;}
+  courses.unshift({title,sub:document.getElementById('cSubject').value,level:document.getElementById('cLevel').value,dur:document.getElementById('cDur').value||'—',date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}),url});
+  renderCourses();closeModal('addCourseModal');showToast('✅ Cours publié !');
+}
+
+// ══ EXERCISES ══
+function renderExercises(){
+  document.getElementById('exTable').innerHTML=`<tr><th>Titre</th><th>Matière</th><th>Niveau</th><th>Date limite</th><th>Rendus</th><th>Actions</th></tr>`
+  +exercises.map((e,i)=>`
+    <tr>
+      <td><strong>${e.title}</strong></td>
+      <td><span class="tag ${tagClass[e.sub]||''}">${subMap[e.sub]||e.sub}</span></td>
+      <td>${e.level}</td>
+      <td>📅 ${e.due}</td>
+      <td>${e.rendus} élèves</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteEx(${i})">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function deleteEx(i){exercises.splice(i,1);renderExercises();showToast('🗑 Exercice supprimé');}
+
+function addExercise(){
+  const title=document.getElementById('exTitle').value;
+  if(!title){showToast('⚠️ Titre obligatoire');return;}
+  exercises.unshift({title,sub:document.getElementById('exSubject').value,level:document.getElementById('exLevel').value,due:document.getElementById('exDue').value||'—',rendus:0});
+  renderExercises();closeModal('addExModal');showToast('✅ Exercice publié !');
+}
+
+// ══ NEWS ══
+function renderNews(){
+  const catColor={arabic:'#FEF3C7',sciences:'#EEF2FF',event:'#ECFDF5',general:'#E0F2FE'};
+  document.getElementById('newsList').innerHTML=news.map((n,i)=>`
+    <div class="news-item">
+      <div class="news-icon" style="background:${catColor[n.cat]||'var(--bg)'}">${n.emoji}</div>
+      <div class="news-info">
+        <div class="news-title">${n.title}</div>
+        <div class="news-meta">${n.content.substring(0,80)}... · 📅 ${n.date}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteNews(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteNews(i){news.splice(i,1);renderNews();showToast('🗑 Actualité supprimée');}
+
+function addNews(){
+  const title=document.getElementById('newsTitle').value;
+  const content=document.getElementById('newsContent').value;
+  if(!title||!content){showToast('⚠️ Titre et contenu obligatoires');return;}
+  news.unshift({title,cat:document.getElementById('newsCat').value,emoji:document.getElementById('newsEmoji').value||'📢',content,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
+  renderNews();closeModal('addNewsModal');showToast('✅ Actualité publiée !');
+}
+
+// ══ PRICES ══
+function renderPrices(){
+  document.getElementById('priceGrid').innerHTML=prices.map(p=>`
+    <div class="price-card">
+      <button class="price-edit" onclick="openPriceEdit('${p.id}')">✏️</button>
+      <div class="price-icon">${p.name.split(' ')[0]}</div>
+      <div class="price-name">${p.name.split(' ').slice(1).join(' ')}</div>
+      <div class="price-amount" style="color:${p.color}">${p.price}€</div>
+      <div class="price-period">/mois</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:.5rem">${p.desc}</div>
+    </div>`).join('');
+  updateTotals();
+}
+
+function openPriceEdit(id){
+  editingPriceId=id;
+  const p=prices.find(x=>x.id===id);
+  document.getElementById('editPriceName').value=p.name;
+  document.getElementById('editPriceValue').value=p.price;
+  document.getElementById('editPriceDesc').value=p.desc;
+  openModal('editPriceModal');
+}
+
+function savePriceEdit(){
+  const val=parseInt(document.getElementById('editPriceValue').value);
+  const desc=document.getElementById('editPriceDesc').value;
+  if(!val||val<1){showToast('⚠️ Prix invalide');return;}
+  const p=prices.find(x=>x.id===editingPriceId);
+  p.price=val;p.desc=desc;
+  renderPrices();closeModal('editPriceModal');showToast('✅ Tarif mis à jour !');
+}
+
+function calcTotal(subs){return subs.reduce((t,s)=>{const p=prices.find(x=>x.id===s);return t+(p?p.price:0);},0);}
+
+function updateTotals(){
+  const combos={ahmed:['arabic','math','physics'],sara:['physics'],youssef:['arabic'],lina:['math','chemistry']};
+  if(document.getElementById('totalAhmed'))document.getElementById('totalAhmed').textContent=calcTotal(combos.ahmed)+'€';
+  if(document.getElementById('totalSara'))document.getElementById('totalSara').textContent=calcTotal(combos.sara)+'€';
+  if(document.getElementById('totalYoussef'))document.getElementById('totalYoussef').textContent=calcTotal(combos.youssef)+'€';
+  if(document.getElementById('totalLina'))document.getElementById('totalLina').textContent=calcTotal(combos.lina)+'€';
+}
+
+// ══ SUBJECT STATS ══
+function renderSubjectStats(){
+  const counts={arabic:0,math:0,physics:0,chemistry:0,french:0,english:0};
+  students.forEach(s=>s.subs.forEach(sub=>counts[sub]=(counts[sub]||0)+1));
+  const max=Math.max(...Object.values(counts))||1;
+  const colors={arabic:'var(--gold)',math:'var(--blue)',physics:'var(--green)',chemistry:'var(--purple)',french:'var(--red)',english:'var(--blue-dark)'};
+  document.getElementById('subjectStats').innerHTML=Object.entries(counts).map(([sub,n])=>`
+    <div style="margin-bottom:.8rem">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+        <span>${subMap[sub]||sub}</span><span style="font-weight:600">${n} élève${n>1?'s':''}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${Math.round(n/max*100)}%;background:${colors[sub]||'var(--blue)'}"></div></div>
+    </div>`).join('');
+}
+
+// ══ MESSAGES ══
+function renderMsgList(){
+  document.getElementById('msgList').innerHTML=students.slice(0,4).map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 1rem;cursor:pointer;border-bottom:1px solid var(--bg);transition:background .15s" onmouseover="this.style.background='var(--blue-light)'" onmouseout="this.style.background=''" onclick="selectMsg('${s.pre} ${s.nom}','${(s.pre[0]+s.nom[0]).toUpperCase()}')">
+      <div style="width:34px;height:34px;border-radius:50%;background:${['#1A6BFF','#10B981','#EF9F27','#8B5CF6'][i]};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">${(s.pre[0]+s.nom[0]).toUpperCase()}</div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">${s.pre} ${s.nom}</div><div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Bonjour Prof. !</div></div>
+      ${i<2?`<div style="width:7px;height:7px;border-radius:50%;background:var(--blue)"></div>`:''}
+    </div>`).join('');
+}
+
+function selectMsg(name,initials){
+  document.getElementById('msgChatAv').textContent=initials;
+  document.getElementById('msgChatName').textContent=name;
+}
+
+function sendAdminMsg(){
+  const inp=document.getElementById('adminMsgInput');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  const body=document.getElementById('adminMsgBody');
+  const t=`${new Date().getHours()}h${String(new Date().getMinutes()).padStart(2,'0')}`;
+  body.innerHTML+=`<div style="max-width:65%;padding:9px 13px;border-radius:14px 4px 14px 14px;background:var(--blue);color:white;font-size:13px;align-self:flex-end">${msg}<div style="font-size:10px;opacity:.6;margin-top:3px;text-align:right">${t}</div></div>`;
+  inp.value='';body.scrollTop=body.scrollHeight;
+}
+document.getElementById('adminMsgInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAdminMsg();}});
+
+// ══ EXCHANGE REPLY ══
+function sendReply(inputId,initials){
+  const msg=document.getElementById(inputId).value.trim();
+  if(!msg){showToast('⚠️ Écris une réponse avant d\'envoyer');return;}
+  document.getElementById(inputId).value='';
+  document.getElementById('exchangeCount').textContent=Math.max(0,parseInt(document.getElementById('exchangeCount').textContent)-1);
+  showToast(`✅ Réponse envoyée à ${initials} !`);
+}
+
+// ══ MODAL ══
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');}));
+
+// ══ TOAST ══
+function showToast(msg){
+  document.getElementById('toastMsg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

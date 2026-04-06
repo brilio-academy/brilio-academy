@@ -1,0 +1,64 @@
+<svg width="680" height="360" viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-name { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 300; font-size: 38px; letter-spacing: 6px; fill: #3C3489; }
+      .logo-sub { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 300; font-size: 13px; letter-spacing: 5px; fill: #BA7517; }
+    </style>
+  </defs>
+
+  <!-- Fond blanc -->
+  <rect width="680" height="360" fill="white"/>
+
+  <!-- Halo lumineux externe -->
+  <circle cx="340" cy="118" r="105" fill="#FAEEDA" opacity="0.35"/>
+  <circle cx="340" cy="118" r="88" fill="#FAC775" opacity="0.18"/>
+
+  <!-- Grands rayons lumineux dorés -->
+  <line x1="340" y1="4" x2="340" y2="28" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+  <line x1="340" y1="208" x2="340" y2="232" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+  <line x1="228" y1="118" x2="204" y2="118" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+  <line x1="452" y1="118" x2="476" y2="118" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Rayons diagonaux longs -->
+  <line x1="261" y1="37" x2="275" y2="51" stroke="#EF9F27" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="419" y1="37" x2="405" y2="51" stroke="#EF9F27" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="261" y1="199" x2="275" y2="185" stroke="#EF9F27" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="419" y1="199" x2="405" y2="185" stroke="#EF9F27" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Petits rayons intermédiaires -->
+  <line x1="228" y1="66" x2="240" y2="74" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="452" y1="66" x2="440" y2="74" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="228" y1="170" x2="240" y2="162" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="452" y1="170" x2="440" y2="162" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="300" y1="14" x2="306" y2="28" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="380" y1="14" x2="374" y2="28" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="300" y1="222" x2="306" y2="208" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  <line x1="380" y1="222" x2="374" y2="208" stroke="#EF9F27" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Cercle principal violet -->
+  <circle cx="340" cy="118" r="72" fill="#7F77DD" opacity="0.15"/>
+  <circle cx="340" cy="118" r="58" fill="#7F77DD"/>
+
+  <!-- Atome : orbites -->
+  <ellipse cx="340" cy="118" rx="52" ry="20" fill="none" stroke="#EF9F27" stroke-width="1.8" opacity="0.9"/>
+  <ellipse cx="340" cy="118" rx="52" ry="20" fill="none" stroke="#EF9F27" stroke-width="1.8" opacity="0.9" transform="rotate(60 340 118)"/>
+  <ellipse cx="340" cy="118" rx="52" ry="20" fill="none" stroke="#EF9F27" stroke-width="1.8" opacity="0.9" transform="rotate(120 340 118)"/>
+
+  <!-- Noyau central lumineux -->
+  <circle cx="340" cy="118" r="13" fill="#FAC775"/>
+  <circle cx="340" cy="118" r="9" fill="#EF9F27"/>
+
+  <!-- Électrons -->
+  <circle cx="392" cy="118" r="4" fill="white"/>
+  <circle cx="314" cy="135" r="4" fill="white"/>
+  <circle cx="314" cy="101" r="4" fill="white"/>
+
+  <!-- Nom BRILIO -->
+  <text x="340" y="258" text-anchor="middle" class="logo-name">BRILIO</text>
+
+  <!-- Ligne séparatrice dorée -->
+  <line x1="250" y1="268" x2="430" y2="268" stroke="#EF9F27" stroke-width="0.8"/>
+
+  <!-- ACADEMY -->
+  <text x="340" y="290" text-anchor="middle" class="logo-sub">ACADEMY</text>
+</svg>
